@@ -10,4 +10,4 @@ Architecture: all
 Depends: python2,${misc:Depends}
 Description: Original PazzleTV3 server packed to deb systemd service
  Try carefully store settings and security
- http://xbmc.ru/forum/showthread.php?t=16628&page=105
+ http://xbmc.ru/forum/showthread.php?t=16628

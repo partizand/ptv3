@@ -1,3 +1,9 @@
+ptv3 (3.10.3-2) unstable; urgency=medium
+
+  * Fix working by install logo dir
+
+ -- Partizand <partizand@gmail.com>  Sat, 02 Nov 2019 11:15:12 +0400
+
 ptv3 (3.10.3-1) unstable; urgency=medium
 
   * First release deb package for pazzleTV
