@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<settings>
+    <setting id="on"      type="bool"      label="Включить сервер"     default="true"/>
+</settings>
