@@ -1,3 +1,19 @@
+ptv3 (3.11.5-1) unstable; urgency=medium
+
+  * New upstream release 3.11.5
+  * New http searchers
+
+ -- Partizand <partizand@gmail.com>  Fri, 15 Nov 2019 13:53:50 +0400
+
+ptv3 (3.11.3-1) unstable; urgency=medium
+
+  * New upstream release 3.11.3
+  * Fix http-searchers
+  * Change timeout for restreamer (close faster if channel not access)
+  * New proxytv work (udpxy)
+
+ -- Partizand <partizand@gmail.com>  Fri, 15 Nov 2019 13:50:50 +0400
+
 ptv3 (3.10.3-2) unstable; urgency=medium
 
   * Fix working by install logo dir
