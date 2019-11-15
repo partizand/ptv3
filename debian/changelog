@@ -1,0 +1,5 @@
+ptv3 (3.10.3-1) unstable; urgency=medium
+
+  * First release deb package for pazzleTV
+
+ -- Partizand <partizand@gmail.com>  Mon, 28 Oct 2019 12:08:21 +0400

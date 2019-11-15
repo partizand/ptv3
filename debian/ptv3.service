@@ -1,0 +1,16 @@
+[Unit]
+Description=pazzle tv 3
+Requires=network-online.target
+After=network-online.target acestream.service
+
+[Service]
+DynamicUser=yes
+StateDirectory=ptv3
+Type=simple
+Restart=always
+WorkingDirectory=/var/lib/ptv3/
+ExecStart=/usr/bin/python2 server.py
+
+[Install]
+WantedBy=multi-user.target
+ 

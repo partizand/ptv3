@@ -1,0 +1,13 @@
+Source: ptv3
+Section: net
+Priority: optional
+Maintainer: Partizand <partizand@gmail.com>
+Build-Depends: debhelper (>= 11)
+Standards-Version: 4.1.3
+
+Package: ptv3
+Architecture: all
+Depends: python2,${misc:Depends}
+Description: Original PazzleTV3 server packed to deb systemd service
+ Try carefully store settings and security
+ http://xbmc.ru/forum/showthread.php?t=16628&page=105
