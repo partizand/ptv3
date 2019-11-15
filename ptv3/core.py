@@ -1,21 +1,34 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
 import os, sys, time, socket, json
-import settings
-try:
-	import xbmcaddon, xbmc
-	addon = xbmcaddon.Addon(id='ptv3')
-	serv_dir = os.path.join(addon.getAddonInfo('path'),"serv")
-	picon_dir = os.path.join(addon.getAddonInfo('path'),'logo')
-	#UserDir = os.path.join(addon.getAddonInfo('path'), "user" )
-	set=xbmcaddon.Addon(id='ptv3')
-	set.setSetting("ptv",'3')
-	UserDir = os.path.join(xbmc.translatePath("special://masterprofile/"),"addon_data","ptv3")
-except:
-	serv_dir = os.path.join(os.getcwd(), "serv" )
-	picon_dir = os.path.join(os.getcwd(),'logo')
-	UserDir = os.path.join(os.getcwd(), "user" )
+from . import settings as seti
 
+# try:
+# 	import xbmcaddon, xbmc
+# 	addon = xbmcaddon.Addon(id='ptv3')
+# 	serv_dir = os.path.join(addon.getAddonInfo('path'),"serv")
+# 	serv_py = serv_dir
+# 	picon_dir = os.path.join(addon.getAddonInfo('path'),'logo')
+# 	#UserDir = os.path.join(addon.getAddonInfo('path'), "user" )
+# 	set=xbmcaddon.Addon(id='ptv3')
+# 	set.setSetting("ptv",'3')
+# 	UserDir = os.path.join(xbmc.translatePath("special://masterprofile/"),"addon_data","ptv3")
+# except:
+# 	serv_dir = os.path.expanduser("~/.local/share/pazzltv3/serv")
+# 	picon_dir = os.path.expanduser("~/.local/share/pazzltv3/logo")
+# 	UserDir = os.path.expanduser("~/.config/pazzltv3/settings")
+# 	serv_py = os.path.join(os.getcwd(), "serv")
+# 	if not os.path.exists(UserDir):
+# 		os.makedirs(UserDir)
+#
+# 	if not os.path.exists(serv_dir):
+# 		os.makedirs(serv_dir)
+#
+# 	if not os.path.exists(picon_dir):
+# 		os.makedirs(picon_dir)
 #print serv_dir
+
+settings = seti.Settings.getInstance()
 
 UrlCashe={}
 BanCashe=[]
@@ -26,15 +39,14 @@ except: port = 8185
 if port=='': port = 8185
 
 
-sys.path.append(serv_dir)
-ld=os.listdir(serv_dir)
+sys.path.append(settings.serv_dir)
+ld=os.listdir(settings.serv_py)
 #print ld
 Lserv=[]
 for i in ld:
 	if i[-3:]=='.py': Lserv.append(i[:-3])
 
-
-sys.path.append(UserDir)
+sys.path.append(settings.UserDir)
 
 #======================Thread==========================
 Lthread = []
@@ -63,7 +75,7 @@ def create_thread(param):
 #================================================
 
 def save_BLs(BLs):
-		fp=os.path.join(UserDir, 'BList.py')
+		fp=os.path.join(settings.UserDir, 'BList.py')
 		fl = open(fp, "w")
 		fl.write('# -*- coding: utf-8 -*-\n')
 		fl.write('BLs=[\n')
@@ -81,7 +93,7 @@ except:
 
 
 def save_DBC(DBC):
-		fp=os.path.join(UserDir, 'UserDBcnl.py')
+		fp=os.path.join(settings.UserDir, 'UserDBcnl.py')
 		fl = open(fp, "w")
 		fl.write('# -*- coding: utf-8 -*-\n')
 		fl.write('DBC={\n')
@@ -90,7 +102,7 @@ def save_DBC(DBC):
 		fl.write('}\n')
 		fl.close()
 
-sys.path.append(UserDir)
+sys.path.append(settings.UserDir)
 try: 
 	from UserDBcnl import *
 except: 
@@ -102,12 +114,12 @@ from DefGR import *
 
 
 def fs_enc(path):
-    sys_enc = sys.getfilesystemencoding() if sys.getfilesystemencoding() else 'utf-8'
-    return path.decode('utf-8').encode(sys_enc)
+	sys_enc = sys.getfilesystemencoding() if sys.getfilesystemencoding() else 'utf-8'
+	return path.decode('utf-8').encode(sys_enc)
 
 def fs_dec(path):
-    sys_enc = sys.getfilesystemencoding() if sys.getfilesystemencoding() else 'utf-8'
-    return path.decode(sys_enc).encode('utf-8')
+	sys_enc = sys.getfilesystemencoding() if sys.getfilesystemencoding() else 'utf-8'
+	return path.decode(sys_enc).encode('utf-8')
 
 def lower(t):
 	try:t=t.decode('utf-8')
@@ -620,7 +632,7 @@ def unite_gr(id1, id2):
 def save_channels(n, L):
 		s=str(int(n))
 		print 'save_channels-'+s+"-"+str(len(L))
-		fp=os.path.join(serv_dir, s+'.cl')
+		fp=os.path.join(settings.serv_dir, s+'.cl')
 		fl = open(fp, "w")
 		fl.write('[\n')
 		for i in L:
@@ -728,7 +740,7 @@ def add_cahe_lists(s, t, c):
 	cahe_lists[s]={'time': t, 'cahe': c}
 
 def get_cahe_list(s):
-		fp=os.path.join(serv_dir, s+'.cl')
+		fp=os.path.join(settings.serv_dir, s+'.cl')
 		try: tm=os.path.getmtime(fp)
 		except: tm=0
 		if s in cahe_lists.keys():
@@ -743,7 +755,7 @@ def get_cahe_list(s):
 		return L
 
 def get_cahe_time(s):
-		fp=os.path.join(serv_dir, s+'.cl')
+		fp=os.path.join(settings.serv_dir, s+'.cl')
 		try: tm=os.path.getmtime(fp)
 		except: tm=0
 		if s in cahe_lists.keys():
@@ -768,7 +780,7 @@ def get_SG():
 	return SG
 
 def save_Groups(L):
-		fp=os.path.join(UserDir, 'UserGR.py')
+		fp=os.path.join(settings.UserDir, 'UserGR.py')
 		fl = open(fp, "w")
 		fl.write('[\n')
 		for i in L:
@@ -777,7 +789,7 @@ def save_Groups(L):
 		fl.close()
 
 def open_Groups():
-		fp=os.path.join(UserDir, 'UserGR.py')
+		fp=os.path.join(settings.UserDir, 'UserGR.py')
 		
 		try:sz=os.path.getsize(fp)
 		except:sz=0
@@ -1243,7 +1255,7 @@ def streams(id):
 		for t in range(60):
 			if len(Lthread) == len(urls): break
 			#if len(Lthread) > 1 and fplay =='true': break
-			time.sleep(0.31)
+			time.sleep(0.1)
 		
 		for rst in Lthread:
 			Lst=rst['L']

@@ -4,7 +4,7 @@
 
 from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 import threading, SocketServer, BaseHTTPServer
-quit_event = threading.Event()
+
 
 
 import sys, os, json
@@ -12,34 +12,43 @@ import time
 import urllib, urllib2, socket
 import base64
 
-import settings
-import core
+from . import settings as setin
+from . import core
 #import epg
-import hls
+from . import hls
 
+from . import archive
+from . import epg
+
+
+quit_event = threading.Event()
+
+settings = setin.Settings.getInstance()
 
 buf = []
 trd = [0]
 twr = [0]
-for b in range (100):
+for b in range(100):
 	buf.append(None)
 
-
-try:
-	import xbmcaddon
-	addon = xbmcaddon.Addon(id='ptv3')
-	root_dir = addon.getAddonInfo('path')
-except:
-	root_dir = os.getcwd()
+# try:
+# 	import xbmcaddon
+# 	addon = xbmcaddon.Addon(id='ptv3')
+# 	root_dir = addon.getAddonInfo('path')
+# except:
+# 	root_dir = os.getcwd()
 
 #settings.set('port', 8185)
-try: port = int(settings.get('port'))
-except: 
-	port = 8185
-	settings.set('port', 8185)
-if port=='': 
-	port = 8185
-	settings.set('port', 8185)
+
+
+
+# try: port = int(settings.get('port'))
+# except:
+# 	port = 8185
+# 	settings.set('port', 8185)
+# if port=='':
+# 	port = 8185
+# 	settings.set('port', 8185)
 
 def mfind(t,s,e):
 	r=t[t.find(s)+len(s):]
@@ -77,13 +86,7 @@ def get_ip():
 	return IP
 
 
-ip = get_ip()
 
-
-print('----- Starting PTV3 0.10.1 -----')
-print('HELP:     http://'+ip+':'+str(port))
-print('PLAYLIST: http://'+ip+':'+str(port)+'/playlist')
-trigger = True
 
 
 # =========================== Базовые функции ================================
@@ -262,7 +265,7 @@ for pid in range(99):
 	set_list.append('id_serv'+sid)
 	btn_list.append('btn_upd'+sid)
 
-fl = open(os.path.join(root_dir,"webui.htm"), "r")
+fl = open(os.path.join(settings.root_dir,"webui.htm"), "r")
 temp_ui=fl.read()
 fl.close()
 
@@ -346,7 +349,7 @@ def get_lock_cn(id):
 
 class cn_editor():
 	def __init__(self):
-		fl = open(os.path.join(root_dir,"webui.files", "cnl.htm"), "r")
+		fl = open(os.path.join(settings.root_dir,"webui.files", "cnl.htm"), "r")
 		self.data = fl.read()
 		fl.close()
 		if settings.get('editor_form') != 'false': 
@@ -399,7 +402,7 @@ class cn_editor():
 		return dt[dt.find('<!--items-->'):]
 
 def editor():
-		fl = open(os.path.join(root_dir,"webui.files", "cnl.htm"), "r")
+		fl = open(os.path.join(settings.root_dir,"webui.files", "cnl.htm"), "r")
 		data = fl.read()
 		fl.close()
 		L = core.get_base()#get_DBC()#channels('all')
@@ -426,7 +429,7 @@ def editor():
 		return data.replace('<!--items-->',items) 
 
 def set_epg():
-		fl = open(os.path.join(root_dir,"webui.files", "epg.htm"), "r")
+		fl = open(os.path.join(settings.root_dir,"webui.files", "epg.htm"), "r")
 		ui = fl.read()
 		fl.close()
 		ui=ui.replace('[UPDATE]', controls.button('/epg/refresh'))
@@ -449,7 +452,7 @@ def set_epg():
 		return ui
 
 def link_epg(id1):
-		fl = open(os.path.join(root_dir,"webui.files", "le.htm"), "r")
+		fl = open(os.path.join(settings.root_dir,"webui.files", "le.htm"), "r")
 		data = fl.read()
 		fl.close()
 		try:    title=core.DBC[id1]['title']
@@ -484,7 +487,7 @@ def link_epg(id1):
 		return data
 
 def link_arh(id1):
-		fl = open(os.path.join(root_dir,"webui.files", "la.htm"), "r")
+		fl = open(os.path.join(settings.root_dir,"webui.files", "la.htm"), "r")
 		data = fl.read()
 		fl.close()
 		try:    title=core.DBC[id1]['title']
@@ -516,7 +519,7 @@ def link_arh(id1):
 
 def select_picon(id):
 		import picondb
-		fl = open(os.path.join(root_dir,"webui.files", "lp.htm"), "r")
+		fl = open(os.path.join(settings.root_dir,"webui.files", "lp.htm"), "r")
 		data = fl.read()
 		fl.close()
 		try:title=core.DBC[id]['title']#win()
@@ -537,7 +540,7 @@ def select_picon(id):
 
 
 def info(id):
-		fl = open(os.path.join(root_dir,"webui.files", "info.htm"), "r")
+		fl = open(os.path.join(settings.root_dir,"webui.files", "info.htm"), "r")
 		data = fl.read()
 		fl.close()
 		inf=""
@@ -594,7 +597,7 @@ def channel_info(id):
 		return inf
 
 def unite_gr(id1):
-		fl = open(os.path.join(root_dir,"webui.files", "unite_gr.htm"), "r")
+		fl = open(os.path.join(settings.root_dir,"webui.files", "unite_gr.htm"), "r")
 		data = fl.read()
 		fl.close()
 		
@@ -618,7 +621,7 @@ def unite_gr(id1):
 		return data
 
 def unite(id1):
-		fl = open(os.path.join(root_dir,"webui.files", "unite.htm"), "r")
+		fl = open(os.path.join(settings.root_dir,"webui.files", "unite.htm"), "r")
 		data = fl.read()
 		fl.close()
 		
@@ -642,7 +645,7 @@ def unite(id1):
 		return data
 
 def add_to_group(gr):
-		fl = open(os.path.join(root_dir,"webui.files", "add2gr.htm"), "r")
+		fl = open(os.path.join(settings.root_dir,"webui.files", "add2gr.htm"), "r")
 		data = fl.read()
 		fl.close()
 		data=data.replace('[TITLE]', gr)
@@ -662,7 +665,7 @@ def add_to_group(gr):
 		return data
 
 def split(id1):
-		fl = open(os.path.join(root_dir,"webui.files", "split.htm"), "r")
+		fl = open(os.path.join(settings.root_dir,"webui.files", "split.htm"), "r")
 		data = fl.read()
 		fl.close()
 		
@@ -683,7 +686,7 @@ def split(id1):
 		return data
 
 def groups():
-		fl = open(os.path.join(root_dir,"webui.files", "gr.htm"), "r")
+		fl = open(os.path.join(settings.root_dir,"webui.files", "gr.htm"), "r")
 		data = fl.read()
 		fl.close()
 		L=core.open_Groups()
@@ -701,7 +704,7 @@ def groups():
 
 
 def group_editor(gr):
-		fl = open(os.path.join(root_dir,"webui.files", "gr_cl.htm"), "r")
+		fl = open(os.path.join(settings.root_dir,"webui.files", "gr_cl.htm"), "r")
 		data = fl.read()
 		fl.close()
 
@@ -1396,8 +1399,7 @@ class HttpProcessor(BaseHTTPRequestHandler):
 class MyThreadingHTTPServer(SocketServer.ThreadingMixIn, BaseHTTPServer.HTTPServer):
 	pass
 
-serv = MyThreadingHTTPServer(("0.0.0.0",port), HttpProcessor)
-threading.Thread(target=serv.serve_forever).start()
+
 
 
 
@@ -1422,7 +1424,7 @@ def get_on(addres):
 			if nmf in fch.keys():
 				data = fch[nmf]
 			else:
-				fl = open(os.path.join(root_dir,"webui.files", nmf), "rb")#
+				fl = open(os.path.join(settings.root_dir,"webui.files", nmf), "rb")#
 				data = fl.read()
 				fl.close()
 				fch[nmf]=data
@@ -1433,7 +1435,7 @@ def get_on(addres):
 			if nmf in fch.keys():
 				data = fch[nmf]
 			else:
-				fl = open(os.path.join(root_dir,"logo", nmf), "rb")
+				fl = open(os.path.join(settings.root_dir,"logo", nmf), "rb")
 				data = fl.read()
 				fl.close()
 				fch[nmf]=data
@@ -1854,51 +1856,86 @@ def get_on(addres):
 
 #===================================================================
 
-def abortRequested():
-	try: 
-		import xbmc
-		r=xbmc.abortRequested
+def kodiAbortRequested(monitor):
+	"""
+	Check is Kodi is closing.
+	:param monitor: kodi object or None
+	:return: true - Kodi is closing
+	"""
+
+	if monitor:
+		return monitor.abortRequested()
+	else:
+		return False
+
+
+
+# Start main code
+
+if __name__ == '__main__':
+
+
+
+	port = int(settings.get('port'))
+
+	ip = get_ip()
+
+	print('----- Starting PTV3 0.10.1 -----')
+	print('HELP:     http://' + ip + ':' + str(port))
+	print('PLAYLIST: http://' + ip + ':' + str(port) + '/playlist')
+
+	trigger = True
+
+	try:
+		serv = MyThreadingHTTPServer(("0.0.0.0", port), HttpProcessor)
+		threading.Thread(target=serv.serve_forever).start()
 	except:
-		r=False
-	return r
+		print("Start server error")
+		exit(1)
 
-print('----- PTV3_serv OK -----')
-import archive
-import epg
-#run_string('import epg')
-#time.sleep(5)
-#print('----- EPG cd:'+str(cdata))
-		
-#if cdata>udata and settings.get("epg_on")!='false':
-#			print('----- EPG update -----')
-			#epg.upepg()
-#			run_string('epg.upepg()')
+	print('----- PTV3_serv OK -----')
 
-#run_string('epg.xmltv()')
 
-ntr = 0
-while trigger:
-		if abortRequested(): break
-		if ntr==0:
-			core.refresh_cnl()
-			
-			try:	udata = int(epg.get_inf_db('udata'))
-			except: udata = 0
-			cdata = int(time.strftime('%Y%m%d'))
-			#print('----- EPG ud:'+str(udata))
-			if cdata>udata and settings.get("epg_on")!='false':
-						print('----- EPG update -----')
-						epg.upepg()
-						#run_string('epg.upepg()')
-			
-		ntr+=1
-		if ntr>10: ntr = 0
-		time.sleep(6)
 
-			
 
-try:serv.shutdown()
-except:pass
+	#run_string('import epg')
+	#time.sleep(5)
+	#print('----- EPG cd:'+str(cdata))
 
-print('----- PTV3_serv stopped -----')
+	#if cdata>udata and settings.get("epg_on")!='false':
+	#			print('----- EPG update -----')
+				#epg.upepg()
+	#			run_string('epg.upepg()')
+
+	#run_string('epg.xmltv()')
+
+	ntr = 0
+	while trigger:
+			# Check kodi abort
+			if settings.isKodi and settings.monitor:
+				if settings.monitor.abortRequested():
+					break
+
+			if ntr==0:
+				core.refresh_cnl()
+
+				try:	udata = int(epg.get_inf_db('udata'))
+				except: udata = 0
+				cdata = int(time.strftime('%Y%m%d'))
+				#print('----- EPG ud:'+str(udata))
+				if cdata>udata and settings.get("epg_on")!='false':
+							print('----- EPG update -----')
+							epg.upepg()
+							#run_string('epg.upepg()')
+
+			ntr+=1
+			if ntr>10: ntr = 0
+			time.sleep(6)
+
+
+
+	try:serv.shutdown()
+	except:pass
+
+	print('----- PTV3_serv stopped -----')
 

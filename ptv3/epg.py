@@ -2,26 +2,29 @@
 # Module: server
 # License: GPL v.3 https://www.gnu.org/copyleft/gpl.html
 import sys, os, json
-import settings
+import settings as seti
 import time
 import urllib2
 import core
-
-try:
-	import xbmcaddon, xbmc
-	addon = xbmcaddon.Addon(id='ptv3')
-	serv_dir = os.path.join(addon.getAddonInfo('path'),"serv")
-	picon_dir = os.path.join(addon.getAddonInfo('path'),'logo')
-	set=xbmcaddon.Addon(id='ptv3')
-	set.setSetting("ptv",'3')
-	UserDir = os.path.join(xbmc.translatePath("special://masterprofile/"),"addon_data","ptv3")
-except:
-	serv_dir = os.path.join(os.getcwd(), "serv" )
-	picon_dir = os.path.join(os.getcwd(),'logo')
-	UserDir = os.path.join(os.getcwd(), "user" )
-
 import cookielib
-sid_file = os.path.join(UserDir, 'vsetv.sid')
+
+settings = seti.Settings.getInstance()
+
+# try:
+# 	import xbmcaddon, xbmc
+# 	addon = xbmcaddon.Addon(id='ptv3')
+# 	serv_dir = os.path.join(addon.getAddonInfo('path'),"serv")
+# 	picon_dir = os.path.join(addon.getAddonInfo('path'),'logo')
+# 	set=xbmcaddon.Addon(id='ptv3')
+# 	set.setSetting("ptv",'3')
+# 	UserDir = os.path.join(xbmc.translatePath("special://masterprofile/"),"addon_data","ptv3")
+# except:
+# 	serv_dir = os.path.join(os.getcwd(), "serv" )
+# 	picon_dir = os.path.join(os.getcwd(),'logo')
+# 	UserDir = os.path.join(os.getcwd(), "user" )
+
+
+sid_file = os.path.join(settings.UserDir, 'vsetv.sid')
 cj = cookielib.FileCookieJar(sid_file) 
 hr  = urllib2.HTTPCookieProcessor(cj) 
 opener = urllib2.build_opener(hr) 
@@ -37,7 +40,7 @@ if port=='':
 	settings.set('port', 8185)
 
 
-sys.path.append(UserDir)
+sys.path.append(settings.UserDir)
 
 from UserDBcnl import *
 
@@ -56,17 +59,17 @@ class Dialog():
 		print s2
 	
 	def update (self, s1, message=''):
-		print message
+		print(message)
 		
 	def close(self):
-		print '== OK =='
+		print ('== OK ==')
 
 pDialog=Dialog()
 
 # =========================== Базовые функции ================================
 def save_d(d):
 	try:
-		fp=os.path.join(UserDir, 'epg.db')
+		fp=os.path.join(settings.UserDir, 'epg.db')
 		fl = open(fp, "w")
 		fl.write(repr(d))
 		fl.close()
@@ -75,7 +78,7 @@ def save_d(d):
 
 def get_d():
 	try:
-		fp=os.path.join(UserDir, 'epg.db')
+		fp=os.path.join(settings.UserDir, 'epg.db')
 		fl = open(fp, "r")
 		d=eval(fl.read())
 		fl.close()
@@ -145,7 +148,7 @@ def get_HTML(url, post = None, ref = None, get_redirect = False):
 
     try:
         f = urllib2.urlopen(request)
-    except IOError, e:
+    except IOError as e:
         if hasattr(e, 'reason'):
            print('We failed to reach a server.')
         elif hasattr(e, 'code'):
@@ -175,15 +178,15 @@ def rt(x):
 		return x
 
 def showMessage(heading, message, times = 3000):
-	print message
+	print(message)
 
 def fs_enc(path):
-    sys_enc = sys.getfilesystemencoding() if sys.getfilesystemencoding() else 'utf-8'
-    return path.decode('utf-8').encode(sys_enc)
+	sys_enc = sys.getfilesystemencoding() if sys.getfilesystemencoding() else 'utf-8'
+	return path.decode('utf-8').encode(sys_enc)
 
 def fs_dec(path):
-    sys_enc = sys.getfilesystemencoding() if sys.getfilesystemencoding() else 'utf-8'
-    return path.decode(sys_enc).encode('utf-8')
+	sys_enc = sys.getfilesystemencoding() if sys.getfilesystemencoding() else 'utf-8'
+	return path.decode(sys_enc).encode('utf-8')
 
 
 def lower(t):
@@ -217,7 +220,7 @@ def mfind(t,s,e):
 	return r2
 	
 def debug(s):
-	fl = open(ru(os.path.join( UserDir,"test.txt")), "w")
+	fl = open(ru(os.path.join( settings.UserDir,"test.txt")), "w")
 	fl.write(s)
 	fl.close()
 
@@ -844,7 +847,7 @@ def dload_epg_xml(target=''):
 			#target='http://programtv.ru/xmltv.xml.gz'
 			if target=='': target='https://iptvx.one/epg/epg.xml.gz'#'http://api.torrent-tv.ru/ttv.xmltv.xml.gz'
 			#print "-==-=-=-=-=-=-=- download =-=-=-=-=-=-=-=-=-=-"
-			fp = os.path.join(UserDir, 'tmp.zip')
+			fp = os.path.join(settings.UserDir, 'tmp.zip')
 			
 			req = urllib2.Request(url = target, data = None)
 			req.add_header('User-Agent', 'Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0; Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1) ; .NET CLR 1.1.4322; .NET CLR 2.0.50727; .NET CLR 3.0.4506.2152; .NET CLR 3.5.30729; .NET4.0C)')
@@ -1255,7 +1258,7 @@ def get_channels_list():
 
 def save_EPG():
 		EPG['udata']=time.strftime('%Y%m%d')
-		fp=os.path.join(UserDir, 'EPGdb.py')
+		fp=os.path.join(settings.UserDir, 'EPGdb.py')
 		fl = open(fp, "w")
 		fl.write('# -*- coding: utf-8 -*-\n')
 		fl.write('EPG={\n')
