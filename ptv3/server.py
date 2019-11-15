@@ -80,7 +80,7 @@ def get_ip():
 ip = get_ip()
 
 
-print('----- Starting PTV3 0.11.3 -----')
+print('----- Starting PTV3 0.11.5 -----')
 print('HELP:     http://'+ip+':'+str(port))
 print('PLAYLIST: http://'+ip+':'+str(port)+'/playlist')
 trigger = True
@@ -173,8 +173,11 @@ tr_list=[
 	'tr_upd17',
 	'tr_upd18',
 	'tr_upd19',
+	'tr_upd20',
 	'tr_upd21',
 	'tr_upd22',
+	'tr_upd23',
+	'tr_upd24',
 	'tr_upd31',
 	'tr_upd34',
 	'tr_upd35',
@@ -207,8 +210,11 @@ lb_list=[
 	]
 
 upt_list=[
+	'id_upt20',
 	'id_upt21',
 	'id_upt22',
+	'id_upt23',
+	'id_upt24',
 	'id_upt31',
 	'id_upt32',
 	'id_upt33',
