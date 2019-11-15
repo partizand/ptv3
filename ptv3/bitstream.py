@@ -1,21 +1,22 @@
 # -*- coding: utf-8 -*-
 import urllib2, time, cookielib, os
 
-sid_file = os.path.join(os.getcwd(), 'hls.sid')
+sid_file = os.path.join(os.getcwd(), 'BS.sid')
 
 cj = cookielib.FileCookieJar(sid_file) 
 hr  = urllib2.HTTPCookieProcessor(cj) 
-opener = urllib2.build_opener(hr) 
-urllib2.install_opener(opener) 
+opener = urllib2.build_opener(hr)
+urllib2.install_opener(opener)
 
 
-block_sz = 81920
+block_sz = 1024#81920
 
 stack = []
 buf=None
 run_t = 0
 comp = 0
 
+'''
 from threading import Thread
 class MyThread(Thread):
 	def __init__(self, resp):
@@ -31,7 +32,7 @@ class MyThread(Thread):
 			comp += 1
 		#except:
 		#	stack[self.n]=stack[self.n-1]
-
+'''
 
 class BS():
 	def __init__(self, url):

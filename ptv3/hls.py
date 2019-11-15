@@ -12,6 +12,12 @@ def mfind(t,s,e):
 	r2=r[:r.find(e)]
 	return r2
 
+def get_UA(url):
+	L=[['peers.tv','DuneHD/1.0.3'],]
+	for i in L:
+		if i[0] in url: return i[1]
+	return 'Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60'
+
 class HLS():
 	def __init__(self, hls_url, header='', list_index = -1):
 		self.header = header
@@ -32,7 +38,8 @@ class HLS():
 		try:
 			urllib2.install_opener(urllib2.build_opener()) 
 			req = urllib2.Request(url)
-			req.add_header('User-Agent', 'Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60')
+			UA = get_UA(url)
+			req.add_header('User-Agent', UA)
 			#req.add_header('User-Agent', 'SmartSDK')
 			#|User-Agent=Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:35.0) Gecko/20100101 Firefox/35.0
 			req.add_header('Accept', 'text/html, application/xml, application/xhtml+xml, */*')
@@ -100,7 +107,7 @@ class HLS():
 
 	def get_head(self, url=''):
 		if url=='': url=self.hls_url
-		if 'peers.tv' in url or '178.162' in url:
+		if 'peers.tv/var' in url or '178.162' in url:
 			t1 = url[:url.find('://')+3]
 			t2 = mfind(url, '://', '/')
 			return t1+t2
@@ -126,11 +133,11 @@ class HLS():
 		else:
 			head = self.hls_head
 		
-		#print head
+		print head
 		if L[self.hls_n][:4]!='http': data_url = head+L[self.hls_n]
 		else:						  data_url = L[self.hls_n]
 		
-		print data_url[-20:]
+		print data_url#[-20:]
 		if data_url not in self.hls_complit:
 			
 			data = self.GET(data_url, head)

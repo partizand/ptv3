@@ -36,6 +36,7 @@ def default(key):
 	try:
 		if key == 'serv5':      return 'true'
 		elif 'p2p_serv' in key: return '127.0.0.1'
+		elif 'scan_limit' in key: return '20'
 		elif 'serv' in key:     return 'false'
 		if 'upd3' in key and key!='upd3' : return 'true'
 		if 'upd8' == key :      return ''

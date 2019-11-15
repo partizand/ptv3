@@ -80,7 +80,7 @@ def get_ip():
 ip = get_ip()
 
 
-print('----- Starting PTV3 0.10.3 -----')
+print('----- Starting PTV3 0.11.3 -----')
 print('HELP:     http://'+ip+':'+str(port))
 print('PLAYLIST: http://'+ip+':'+str(port)+'/playlist')
 trigger = True
@@ -172,6 +172,7 @@ tr_list=[
 	'tr_upd16',
 	'tr_upd17',
 	'tr_upd18',
+	'tr_upd19',
 	'tr_upd21',
 	'tr_upd22',
 	'tr_upd31',
@@ -226,6 +227,7 @@ upt_list=[
 	'id_upt16',
 	'id_upt17',
 	'id_upt18',
+	'id_upt19',
 	'id_upt10',
 	'id_upt81',
 	'id_upt82',
@@ -247,6 +249,7 @@ ib_list=[
 	'ib_port',
 	'ib_ip',
 	'ib_p2p_serv',
+	'ib_scan_limit',
 	'ib_mym3u1',
 	'ib_mym3u2',
 	'ib_mym3u3',
@@ -1069,15 +1072,27 @@ class HttpProcessor(BaseHTTPRequestHandler):
 			curl=data[3:]
 			print curl
 			BS=bitstream.BS(curl)
-			#for i in range(10000000):
+			bsn = 0
+			bst = 0
 			while trigger:
+				try:
 					part=BS.get_data()
 					if part == 'error': break
-					if part !=None: self.wfile.write(part)
+					if part !=None: 
+						self.wfile.write(part)
+						bsn = 0
 					else: 
-						#print 'None'
-						#time.sleep(0.01)
+						if bsn > 5: break
+						if bst > 15: break
+						print '== RECONNECT =='
+						time.sleep(0.01)
 						BS=bitstream.BS(curl)
+						bsn+=1
+						bst+=1
+					
+				except:
+					break
+			print '== BS END =='
 
 		elif head[:3]=='BS2:' and self.path not in LGET: 
 			print '== BS =='
@@ -1199,37 +1214,25 @@ class HttpProcessor(BaseHTTPRequestHandler):
 			curl=data[4:]
 			print curl
 			HLS=hls.HLS(curl, header)
-			#for i in range(10000000):
 			n=0
 			er = 0
 			er2= 0
+			st = 0
 			while trigger:
 					n+=1
-					#print n
+					print n
 					part=HLS.get_data2()
 					if part !=None: 
 						self.wfile.write(part)
 						er=0
-					else: 
-						#print 'None'
+						st=1
+					else:
+						if er>3 and st==0: break
 						if er>1000: break
 						er+=1
 						time.sleep(0.5)
 						part = 'None'
-					'''
-					if 'error' in part:
-						time.sleep(0.5)
-						er2+=1
-						if er2>100:
-							print '############# reconnect ############'
-							try:
-								list_index = int(part[6:])
-								HLS=hls.HLS(curl, header, list_index)
-								er2=0
-							except:
-								pass
-					'''
-						
+			print '== HLS END =='
 		elif head[:3]=='MS:': 
 			print '== MS =='
 			BSL = eval(data[3:])
@@ -1866,16 +1869,6 @@ def abortRequested():
 print('----- PTV3_serv OK -----')
 import archive
 import epg
-#run_string('import epg')
-#time.sleep(5)
-#print('----- EPG cd:'+str(cdata))
-		
-#if cdata>udata and settings.get("epg_on")!='false':
-#			print('----- EPG update -----')
-			#epg.upepg()
-#			run_string('epg.upepg()')
-
-#run_string('epg.xmltv()')
 
 ntr = 0
 while trigger:
@@ -1895,8 +1888,6 @@ while trigger:
 		ntr+=1
 		if ntr>10: ntr = 0
 		time.sleep(6)
-
-			
 
 try:serv.shutdown()
 except:pass

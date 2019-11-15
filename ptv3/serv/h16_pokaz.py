@@ -4,7 +4,7 @@
 import os, cookielib, urllib, urllib2, time
 
 serv_id = '16'
-siteUrl = 'pokaz.tv'
+siteUrl = 'pokaz.me'
 httpSiteUrl = 'http://' + siteUrl
 
 def ru(x):return unicode(x,'utf8', 'ignore')
