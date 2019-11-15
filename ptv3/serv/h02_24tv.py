@@ -40,20 +40,20 @@ def mfind(t,s,e):
 
 class PZL:
 	def Streams(self, url):
-			try:
+			#try:
 				url = url.replace('24tv:', httpSiteUrl+'/')
 				print url
 				http=getURL(url)
 				#print http
-				url2 = 'http:'+mfind(http,'id="player" src="','"')
+				url2 = httpSiteUrl+mfind(http,'id="player" src="','"')
 				print url2
 				http=getURL(url2)
 				print http
 				link = mfind(http, 'file:"', '"')
 				print link
 				return [link]
-			except:
-				return []
+			#except:
+			#	return []
 
 	def Canals(self):
 		LL=[]

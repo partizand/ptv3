@@ -43,7 +43,8 @@ class PZL:
 		pass
 
 	def Streams(self, url):
-		return [url.replace('ucom:','')]
+		stream=url.replace('ucom:','')#+'|User-Agent=Android'
+		return [stream,]
 
 
 	def Canals(self):

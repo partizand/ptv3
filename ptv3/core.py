@@ -345,8 +345,8 @@ def find_nm(nm):
 
 
 def upd_canals_db(i):
-	print 'upd_canals_db '+i
-	try:
+	#print 'upd_canals_db '+i
+	#try:
 		exec ("import "+i+"; serv="+i+".PZL()")
 		L=serv.Canals()
 		dl_logo = settings.get("dl_logo")
@@ -369,13 +369,13 @@ def upd_canals_db(i):
 				
 				LL.append(k)
 			L=LL
-	except:
-		L=[]
-		print 'error'
+	#except:
+	#	L=[]
+	#	print 'error'
 	
-	save_channels(i[1:3], L)
-	if settings.get("addcnl")=='true': aggregate_cnl(L)
-	return L
+		save_channels(i[1:3], L)
+		if settings.get("addcnl")=='true': aggregate_cnl(L)
+		return L
 
 def aggregate_cnl(L):
 	nm2id={}
@@ -909,7 +909,7 @@ def get_stream(url):
 					Lpurl = []
 					try:
 						for curl in Lcurl:
-							if 'zabava' in curl or 'vrzh-htlive' in curl or 'yandex' in curl:
+							if 'zabava' in curl or 'vrzh-htlive' in curl or 'yandex' in curl or 'ucom.am' in curl or '/udp/' in curl or 'peers.tv' in curl:
 								import base64
 								ip = settings.get('ip')
 								curl= 'http://'+ip+':'+str(port)+'/restream/'+base64.b64encode(curl)

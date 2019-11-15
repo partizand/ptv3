@@ -44,14 +44,14 @@
 {'url': '24tv:russian-music-box', 'img': 'http://24tv.org/img/240/rumusicbox.jpg', 'title': 'Russian Music Box'},
 {'url': '24tv:tv-khl', 'img': 'http://24tv.org/img/240/khl.jpg', 'title': '\xd0\x9a\xd0\xa5\xd0\x9b'},
 {'url': '24tv:match-strana', 'img': 'http://24tv.org/img/240/strana.jpg', 'title': '\xd0\x9c\xd0\xb0\xd1\x82\xd1\x87! \xd0\xa1\xd1\x82\xd1\x80\xd0\xb0\xd0\xbd\xd0\xb0'},
-{'url': '24tv:football3', 'img': 'http://24tv.org/img/240/match-football3.jpg', 'title': '\xd0\x9c\xd0\xb0\xd1\x82\xd1\x87! \xd0\xa4\xd1\x83\xd1\x82\xd0\xb1\xd0\xbe\xd0\xbb 3'},
+{'url': '24tv:football3', 'img': 'http://24tv.org/img/240/match-football3.jpg', 'title': 'i>'},
 {'url': '24tv:sport1', 'img': 'http://24tv.org/img/240/sport1.jpg', 'title': 'i>'},
 {'url': '24tv:sport2', 'img': 'http://24tv.org/img/240/sport2.jpg', 'title': '\xd1\x81\xd0\xbf\xd0\xbe\xd1\x80\xd1\x82 2 \xd1\x83\xd0\xba\xd1\x80\xd0\xb0\xd0\xb8\xd0\xbd\xd0\xb0'},
 {'url': '24tv:football1-ua', 'img': 'http://24tv.org/img/240/football1.jpg', 'title': '\xd0\xa4\xd1\x83\xd1\x82\xd0\xb1\xd0\xbe\xd0\xbb 1 \xd0\xa3\xd0\xba\xd1\x80\xd0\xb0\xd0\xb8\xd0\xbd\xd0\xb0'},
 {'url': '24tv:football2-ua', 'img': 'http://24tv.org/img/240/football2.jpg', 'title': '\xd0\xa4\xd1\x83\xd1\x82\xd0\xb1\xd0\xbe\xd0\xbb 2 \xd0\xa3\xd0\xba\xd1\x80\xd0\xb0\xd0\xb8\xd0\xbd\xd0\xb0'},
-{'url': '24tv:belarus5', 'img': 'http://24tv.org/img/240/belarus5.jpg', 'title': '\xd0\x91\xd0\xb5\xd0\xbb\xd0\xb0\xd1\x80\xd1\x83\xd1\x81\xd1\x8c 5'},
+{'url': '24tv:belarus5', 'img': 'http://24tv.org/img/240/belarus5.jpg', 'title': 'i>'},
 {'url': '24tv:viasat-sport', 'img': 'http://24tv.org/img/240/viasatsport.jpg', 'title': 'Viasat Sport'},
 {'url': '24tv:match-planeta', 'img': 'http://24tv.org/img/240/mplaneta.jpg', 'title': '\xd0\x9c\xd0\xb0\xd1\x82\xd1\x87! \xd0\x9f\xd0\xbb\xd0\xb0\xd0\xbd\xd0\xb5\xd1\x82\xd0\xb0'},
 {'url': '24tv:match-igra', 'img': 'http://24tv.org/img/240/game.jpg', 'title': '\xd0\x9c\xd0\xb0\xd1\x82\xd1\x87! \xd0\x98\xd0\xb3\xd1\x80\xd0\xb0'},
 ]
-udata=1570166078.32
+udata=1572428227.46
