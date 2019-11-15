@@ -80,7 +80,7 @@ def get_ip():
 ip = get_ip()
 
 
-print('----- Starting PTV3 0.10.1 -----')
+print('----- Starting PTV3 0.10.3 -----')
 print('HELP:     http://'+ip+':'+str(port))
 print('PLAYLIST: http://'+ip+':'+str(port)+'/playlist')
 trigger = True
@@ -1857,7 +1857,8 @@ def get_on(addres):
 def abortRequested():
 	try: 
 		import xbmc
-		r=xbmc.abortRequested
+		try:    r=xbmc.Monitor().abortRequested()
+		except: r=xbmc.abortRequested
 	except:
 		r=False
 	return r

@@ -36,12 +36,13 @@ def get(title):
 	print url
 	hp=getURL3(url)
 	#print hp
-	ss='data-src="'
-	es='" onload='
+	ss='<img src="'
+	es='" class="thumbimage'
 	L=findall(hp, ss, es)
 	L2=[]
 	for i in L:
-		if 'http' in i: L2.append(i[10:].replace('&amp;', '&'))
+		if 'http' in i: 
+			L2.append(i[10:].replace('&amp;', '&'))
 	return L2
 	
 #print get_picons('mezzo')
