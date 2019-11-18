@@ -17,6 +17,7 @@ import core
 #import epg
 import hls
 
+HLSBUF={}
 
 buf = []
 trd = [0]
@@ -80,7 +81,7 @@ def get_ip():
 ip = get_ip()
 
 
-print('----- Starting PTV3 0.11.5 -----')
+print('----- Starting PTV3 0.11.7 -----')
 print('HELP:     http://'+ip+':'+str(port))
 print('PLAYLIST: http://'+ip+':'+str(port)+'/playlist')
 trigger = True
@@ -1226,16 +1227,16 @@ class HttpProcessor(BaseHTTPRequestHandler):
 			st = 0
 			while trigger:
 					n+=1
-					print n
-					part=HLS.get_data2()
+					#print n
+					part=HLS.get_data()
 					if part !=None: 
 						self.wfile.write(part)
 						er=0
 						st=1
 					else:
-						if er>3 and st==0: break
-						if er>1000: break
 						er+=1
+						if st==0: break
+						if er>1000: break
 						time.sleep(0.5)
 						part = 'None'
 			print '== HLS END =='

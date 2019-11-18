@@ -18,6 +18,29 @@ def get_UA(url):
 		if i[0] in url: return i[1]
 	return 'Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60'
 
+def CRC32(buf):
+		import binascii
+		buf = (binascii.crc32(buf) & 0xFFFFFFFF)
+		return str("%08X" % buf)
+
+def save_cache(url, cache):
+	try:
+		fp=os.path.join(os.getcwd(), 'cache2', CRC32(url))
+		fl = open(fp, "wb")
+		fl.write(cache)
+		fl.close()
+	except: pass
+
+def get_cache(url):
+	try:
+		fp=os.path.join(os.getcwd(), 'cache2', CRC32(url))
+		fl = open(fp, "r")
+		DT = fl.read()
+		fl.close()
+		return DT
+	except:
+		return None
+
 class HLS():
 	def __init__(self, hls_url, header='', list_index = -1):
 		self.header = header
@@ -35,6 +58,8 @@ class HLS():
 		self.br_n = 0
 
 	def GET(self, url, Referer = 'http://ya.ru/'):
+		#cache=get_cache(url)
+		#if cache!=None: return cache
 		try:
 			urllib2.install_opener(urllib2.build_opener()) 
 			req = urllib2.Request(url)
@@ -47,6 +72,7 @@ class HLS():
 			response = urllib2.urlopen(req, timeout=3)
 			data=response.read()
 			response.close()
+			#save_cache(url, data)
 			return data
 		except:
 			return None
@@ -133,11 +159,11 @@ class HLS():
 		else:
 			head = self.hls_head
 		
-		print head
+		#print head
 		if L[self.hls_n][:4]!='http': data_url = head+L[self.hls_n]
 		else:						  data_url = L[self.hls_n]
 		
-		print data_url#[-20:]
+		print data_url[-20:]
 		if data_url not in self.hls_complit:
 			
 			data = self.GET(data_url, head)

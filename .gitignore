@@ -1,0 +1,7 @@
+/*.zip
+/ptv3/cache/
+/ptv3/*.exe
+/ptv3/settings/
+/ptv3/user/
+/ptv3/webui.files/* - копия.*
+/ptv3/temp.txt
