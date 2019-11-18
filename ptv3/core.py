@@ -51,10 +51,11 @@ class MyThread(Thread):
 	
 	def run(self):
 		Lu=get_stream(self.param['url'])
-		try:r=test_url(Lu[0])
-		except: r='404'
-		if r!='404': update_Lt(Lu, self.param['n'], self.param['url'])
-		else:		 update_Lt([], self.param['n'], self.param['url'])
+		#try:r=test_url(Lu[0])
+		#except: r='404'
+		#if r!='404': update_Lt(Lu, self.param['n'], self.param['url'])
+		#else:		 update_Lt([], self.param['n'], self.param['url'])
+		update_Lt(Lu, self.param['n'], self.param['url'])
 
 
 def create_thread(param):
@@ -186,6 +187,7 @@ import urllib2
 def test_url(url):
 	if 'udp://' in url:  return '200'
 	if 'rtmp://' in url: return '200'
+	if '/restream/' in url: return '200'
 	
 	if url in BanCashe: return 404
 	
@@ -1240,10 +1242,10 @@ def streams(id):
 			sn+=1
 			create_thread({'url':url, 'n':sn})
 		
-		for t in range(60):
+		for t in range(4):
 			if len(Lthread) == len(urls): break
 			#if len(Lthread) > 1 and fplay =='true': break
-			time.sleep(0.31)
+			time.sleep(0.5)
 		
 		for rst in Lthread:
 			Lst=rst['L']
