@@ -1,0 +1,7 @@
+/.debhelper/
+/debhelper-build-stamp
+/files
+/ptv3/
+/ptv3.postrm.debhelper
+/ptv3.substvars
+ 
