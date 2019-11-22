@@ -1,18 +1,26 @@
-ptv3 (3.11.7-1) unstable; urgency=medium
+ptv3 (3.0.11.9-1) stable; urgency=medium
+
+  * New upstream release 3.0.11.9
+  * Fix mediabay.tv
+  * Add parom.tv
+
+ -- Partizand <partizand@gmail.com>  Fri, 22 Nov 2019 12:47:27 +0400
+
+ptv3 (3.0.11.7-1) unstable; urgency=medium
 
   * New upstream release 3.11.7
   * small fix HLS restreamer
 
  -- Partizand <partizand@gmail.com>  Mon, 18 Nov 2019 16:37:26 +0400
 
-ptv3 (3.11.5-1) unstable; urgency=medium
+ptv3 (3.0.11.5-1) unstable; urgency=medium
 
   * New upstream release 3.11.5
   * New http searchers
 
  -- Partizand <partizand@gmail.com>  Fri, 15 Nov 2019 13:53:50 +0400
 
-ptv3 (3.11.3-1) unstable; urgency=medium
+ptv3 (3.0.11.3-1) unstable; urgency=medium
 
   * New upstream release 3.11.3
   * Fix http-searchers
@@ -21,13 +29,13 @@ ptv3 (3.11.3-1) unstable; urgency=medium
 
  -- Partizand <partizand@gmail.com>  Fri, 15 Nov 2019 13:50:50 +0400
 
-ptv3 (3.10.3-2) unstable; urgency=medium
+ptv3 (3.0.10.3-2) unstable; urgency=medium
 
   * Fix working by install logo dir
 
  -- Partizand <partizand@gmail.com>  Sat, 02 Nov 2019 11:15:12 +0400
 
-ptv3 (3.10.3-1) unstable; urgency=medium
+ptv3 (3.0.10.3-1) unstable; urgency=medium
 
   * First release deb package for pazzleTV
 
