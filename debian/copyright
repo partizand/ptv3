@@ -1,5 +1,5 @@
 Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
-Upstream-Name: ptv-serv
+Upstream-Name: ptv-server
 Source: http://xbmc.ru/forum/showthread.php?t=16628
 
 Files: *

@@ -1,14 +1,14 @@
-Source: ptv-serv
+Source: ptv-server
 Section: net
 Priority: optional
 Maintainer: Partizand <partizand@gmail.com>
 Build-Depends: debhelper (>= 11)
 Standards-Version: 4.1.3
 
-Package: ptv-serv
+Package: ptv-server
 Architecture: all
 Conflicts: ptv3
 Depends: python2,${misc:Depends}
-Description: Original PuzzleTV 3 server packed to deb systemd service
+Description: Puzzle TV server packed to deb systemd service
  Carefully store settings and security
  http://xbmc.ru/forum/showthread.php?t=16628
