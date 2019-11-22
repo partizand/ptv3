@@ -1,9 +1,0 @@
-ptv3/*.py var/lib/ptv3
-ptv3/*.htm var/lib/ptv3
-ptv3/*.png var/lib/ptv3
-ptv3/arh/*.py var/lib/ptv3/arh
-ptv3/arh/*.cl var/lib/ptv3/arh 
-ptv3/serv/*.py var/lib/ptv3/serv
-ptv3/serv/*.cl var/lib/ptv3/serv 
-ptv3/logo/* var/lib/ptv3/logo
-ptv3/webui.files/* var/lib/ptv3/webui.files
