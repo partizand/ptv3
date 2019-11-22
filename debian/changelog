@@ -1,4 +1,4 @@
-ptv3 (3.0.11.9-1) stable; urgency=medium
+ptv-serv (3.0.11.9-1) stable; urgency=medium
 
   * New upstream release 3.0.11.9
   * Fix mediabay.tv
