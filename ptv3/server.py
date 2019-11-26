@@ -81,7 +81,7 @@ def get_ip():
 ip = get_ip()
 
 
-print('----- Starting PTV3 0.11.9 -----')
+print('----- Starting PTV3 0.12.0 -----')
 print('HELP:     http://'+ip+':'+str(port))
 print('PLAYLIST: http://'+ip+':'+str(port)+'/playlist')
 trigger = True
@@ -562,7 +562,7 @@ def info(id):
 		for nm in nml:
 			nms+=nm+"; "
 			idl.append(core.get_ID(nm))
-		data=data.replace('[ID]', id)
+		data=data.replace('[ID]', '<a href="/streams/list/'+id+'">'+id+'</a>')
 		data=data.replace('[NAME]', win(inf['title']))
 		data=data.replace('[SPLIT]', win(nms))
 		gr=''
