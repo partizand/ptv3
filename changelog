@@ -1,4 +1,8 @@
-0.11.9 https://cloud.mail.ru/public/zc99/WoNdDovdc
+3.0.12.0 https://cloud.mail.ru/public/3nFL/5Di5YEykE
+- выделение цветом отключенных источников в окне Info
+- в окне Info клик по ID канала открывает реально передаваемый список потоков.
+
+3.0.11.9 https://cloud.mail.ru/public/zc99/WoNdDovdc
 - поправил mediabay.tv
 - добавил parom.tv
  
