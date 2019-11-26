@@ -715,10 +715,18 @@ def get_all_serv(id):
 
 
 def get_serv_dict():
+	filtr=[]
+	if settings.get("split_1") == 'false':filtr.append('h')
+	if settings.get("split_2") == 'false':filtr.append('u')
+	if settings.get("split_3") == 'false':filtr.append('p')
+	if settings.get("split_4") == 'false':filtr.append('m')
+
 	D={}
 	for i in Lserv:
 			serv_id=str(int(i[1:3]))
-			serv_nm=i[4:]
+			if i[:1] in filtr:	serv_nm='<font color="red">'+i[4:]+'</font>'
+			elif settings.get("serv"+serv_id)== 'false': serv_nm='<font color="red">'+i[4:]+'</font>'
+			else:				serv_nm=i[4:]
 			try: Ls=get_cahe_list(serv_id)
 			except:Ls=[]
 			D[serv_nm]=Ls
