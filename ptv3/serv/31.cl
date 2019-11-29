@@ -44,4 +44,4 @@
 {'url': u'aist:232.0.3.20:1234', 'group': '', 'img': '', 'title': '\xd0\xbc\xd1\x83\xd0\xb7 \xd1\x82\xd0\xb2'},
 {'url': u'aist:232.0.3.21:1234', 'group': '', 'img': '', 'title': u'\u0413\u0423\u0411\u0415\u0420\u041d\u0418\u042f'},
 ]
-udata=1574329861.73
+udata=1574831289.61

@@ -502,6 +502,7 @@ def add_to_gr(id, group=''):
 		if group=='':
 			#sel = xbmcgui.Dialog()
 			#r = sel.select("Группа:", Lg)
+			r=-1
 			print '!!! dopishi select.dialog !!!'
 		else:
 			r=Lg.index(group)

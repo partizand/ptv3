@@ -71,11 +71,11 @@ def POST(target, post=None, referer='http://torrentino.net'):
 
 class ARH:
 	def Streams(self, url):
-		print url
+		#print url
 		return [url]
 
 	def Archive(self, id, t):
-		print t
+		#print t
 		day=t[2]
 		
 		hp=GET(httpSiteUrl+"/"+id)
@@ -103,7 +103,7 @@ class ARH:
 				id    = mfind(i,'href="/','"')
 				title = mfind(i,'channel-text">','<')
 				LL.append({'title':title, 'id':id})
-				print title
+				#print title
 			except:
 				print i
 		

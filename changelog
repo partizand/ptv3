@@ -1,8 +1,19 @@
-3.0.12.0 https://cloud.mail.ru/public/3nFL/5Di5YEykE
+0.12.3 https://cloud.mail.ru/public/33NP/3SA6uLNNL
+- исправлена ошибка в архиве
+- исправлены серчеры по архивам 
+
+0.12.2 https://cloud.mail.ru/public/3gxH/22rbS6Zvc
+- выбор нескольких каналов при добавлении в группу 
+
+0.12.1 - https://cloud.mail.ru/public/35hH/Taiugowyq
+- добавил логотипы
+- поправил загрузку логотипов с mediabay.tv
+
+0.12.0 https://cloud.mail.ru/public/3nFL/5Di5YEykE
 - выделение цветом отключенных источников в окне Info
 - в окне Info клик по ID канала открывает реально передаваемый список потоков.
 
-3.0.11.9 https://cloud.mail.ru/public/zc99/WoNdDovdc
+0.11.9 https://cloud.mail.ru/public/zc99/WoNdDovdc
 - поправил mediabay.tv
 - добавил parom.tv
  

@@ -130,13 +130,14 @@ class ARH:
 			#url = 'http://www.ontvtime.ru/index.php?option=com_content&task=view_record&id='+id+'&start_record='+record #2019-06-02-10-00
 			print url
 			c = COOKE(url)
-			#print c
+			print c
 			host = urllib2.unquote(c['tv'])
 			gid  = c['gid']
 			sid  = c['tv2']
 			time1= c['tv1']
-			stream = "a" + sid + "playlist.m3u8?time=" + time1
+			stream = "a" + sid + "MseInit?time=" + time1 #playlist.m3u8?time=
 			link = 'http://'+host+'/stream/' + gid + '/' + stream
+			print link
 			return [link, ]
 
 

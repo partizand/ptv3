@@ -30,9 +30,11 @@ def showMessage(heading, message, times = 3000):
 def getURL(url, Referer = httpSiteUrl):
 	urllib2.install_opener(urllib2.build_opener())
 	req = urllib2.Request(url)
-	req.add_header('User-Agent', 'Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60')
-	req.add_header('Accept', 'text/html, application/xml, application/xhtml+xml, */*')
+	#req.add_header('User-Agent', 'Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60')
+	req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/78.0.3904.97 Safari/537.36 OPR/65.0.3467.48')
+	req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3')#'text/html, application/xml, application/xhtml+xml, */*'
 	req.add_header('Accept-Language', 'ru,en;q=0.9')
+	#req.add_header('content-type', 'application/json; charset=UTF-8')
 	req.add_header('Referer', Referer)
 	response = urllib2.urlopen(req)
 	link=response.read()
@@ -84,15 +86,27 @@ class ARH:
 
 	def Streams(self, url):
 		if 'peers.tv' in url:
-			try:
-				curl = 'HLS:'+url#+'|User-Agent=Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:35.0) Gecko/20100101 Firefox/35.0'
-				return [curl, ]
-			except:
-				return []
+			hp=getURL(url)
+			#print hp
+			L=hp.splitlines()
+			link=''
+			LL=[]
+			for i in L:
+				if '.m3u8' in i: 
+					#print i
+					link='HLS:'+i
+					#print link
+					LL.append(link)
+			return LL
+			#try:
+			#	curl = 'HLS:'+url#+'|User-Agent=Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:35.0) Gecko/20100101 Firefox/35.0'
+			#	return [curl, ]
+			#except:
+			#	return []
 
 	def Archive(self, id, t):
 		dt=time.strftime('%Y-%m-%d',t)
-		url='http://peers.tv/ajax/program/'+id+'/'+dt+'/'
+		url='https://peers.tv/ajax/program/'+id+'/'+dt+'/'
 		#http://peers.tv/ajax/program/10338258/2019-06-04
 		#print url
 		http=getURL(url)
@@ -101,7 +115,6 @@ class ARH:
 		LL=[]
 		#print 'telecasts ok'
 		for i in L:
-			#print i
 			try:
 				title=rt(i["title"])
 				#print title
@@ -113,10 +126,11 @@ class ARH:
 				files=i["files"]
 				uri=files[0]['movie']
 				#print uri
-				s_time  = time.mktime(time.strptime(i["time"][:16], '%d/%m/%Y %H:%M'))
+				s_time  = time.mktime(time.strptime(i["time"][:16], '%m/%d/%Y %H:%M'))
 				LL.append({'url':uri, 'title':title+" "+subtitle, 'time':tm, 's_time':s_time})
 			except:
 				pass
+				#break
 				#print i
 		return LL
 
@@ -132,18 +146,19 @@ class ARH:
 			for i in channels:
 				title=i['title']
 				channelId=str(i['channelId'])
-				print channelId
-				try:
-					curl='http://peers.tv/ajax/program/'+channelId+'/'+time.strftime('%Y-%m-%d',time.localtime())+'/'
-					#print curl
-					tmp = getURL(curl)
-					if 'm3u8' in tmp:
-						L.append({'title':title, 'id':channelId})
-						print channelId+' - '+title
-				except:
-					pass
-					print 'error'
+				#print channelId
+				if i['hasSchedule'] == 1:
+					try:
+						curl='http://peers.tv/ajax/program/'+channelId+'/'+time.strftime('%Y-%m-%d',time.localtime())+'/'
+						#print curl
+						tmp = getURL(curl)
+						if 'm3u8' in tmp:
+							L.append({'title':title, 'id':channelId})
+							print channelId+' - '+title
+					except:
+						pass
+						print 'error'
 				if '26552780' in channelId: break
-				
+			print 'channels ok'
 			#save_aid(serv_id, d)
 			return L

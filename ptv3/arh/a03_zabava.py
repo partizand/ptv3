@@ -84,6 +84,7 @@ UserAgent='SmartSDK'
 #UserAgent='Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60'
 
 def streams1(id, head):
+	#print '== streams1 =='
 	L=[]
 	id1, id2 = id.split(":")
 	t = eval(id2)#+125
@@ -102,7 +103,7 @@ def streams1(id, head):
 		r = int((459999960-b)/188)
 		
 		uri1=head+'/'+str(d)+'/'+str(t1)+'.ts/0r2_'+str(b)+'r'+str(r)+'.ts'+'|user-agent='+UserAgent
-		print uri1
+		#print uri1
 		L.append(uri1)
 	
 	for i in range(6):
@@ -124,7 +125,7 @@ def streams1(id, head):
 		m2 = int((t-t1)/30)
 		uri2=head+'/'+str(d)+'/'+str(t1)+'.ts/0r2_'+str(b)+'r'+str(r)+'.ts'+'|user-agent='+UserAgent
 		
-		print uri2
+		#print uri2
 		L.append(uri2)
 	return L
 
@@ -175,18 +176,18 @@ class ARH:
 	def Streams(self, id):
 		id=id[7:]
 		id1, id2 = id.split(":")
-		print id1
-		print id2
+		#print id1
+		#print id2
 		url='http://zabava-htlive.cdn.ngenix.net/hls/CH_'+id1+'/variant.m3u8'+'?version=2&hd'
-		print url
+		#print url
 		hp=GET(url)
 		#print hp
 		L=hp.splitlines()
 		for i in L:
 			if '#' not in i and '2000000' in i:
-				print i
+				#print i
 				head = 'http'+mfind(i,'http','/playlist')
-				print head
+				#print head
 		Luri1=streams1(id, head)
 		return Luri1
 		
@@ -198,14 +199,14 @@ class ARH:
 	
 	def Streams_off(self, id):
 		Lr=[]
-		print id
+		#print id
 		id=id[7:]
 		id1, id2 = id.split(":")
-		print id1
-		print id2
+		#print id1
+		#print id2
 		
 		t = eval(id2)
-		print t
+		#print t
 		bd= 460000000/60
 		d = int(t/28800)*28800
 		t1= int(t/1800)*1800
@@ -217,30 +218,30 @@ class ARH:
 		r1 = 2400000-(2400000/30*m1)#460000000 - b1
 		r2 = 2400000-(2400000/30*m2)#460000000 - b2
 		url='http://zabava-htlive.cdn.ngenix.net/hls/CH_'+id1+'/variant.m3u8'
-		print url
+		#print url
 		hp=GET(url)
-		print hp
+		#print hp
 		L=hp.splitlines()
 		for i in L:
 			if '#' not in i and '2000000' in i:
-				print i
+				#print i
 				head = 'http'+mfind(i,'http','/playlist')
-				print head
+				#print head
 		uri1=head+'/'+str(d)+'/'+str(t1)+'.ts/0r2_'+str(b1)+'r'+str(r1)+'.ts'#|user-agent=SmartSDK'
 		uri2=head+'/'+str(d)+'/'+str(t2)+'.ts/0r2_'+str(b2)+'r'+str(r2)+'.ts'#|user-agent=SmartSDK'
 		
 		if test_url(uri1): Lr.append(uri1+'|user-agent=SmartSDK')
 		if test_url(uri2): Lr.append(uri2+'|user-agent=SmartSDK')
-		print Lr
+		#print Lr
 		return Lr
 
 	def Archive(self, id, t):
 		id1, id2 = id.split(":")
-		print t
+		#print t
 		dt=time.strftime('%Y-%m-%d', t)
 		
 		url='https://itv.rt.ru/api/v1/telecasts.json?q%5Bs%5D=beginning%20asc&q%5Bchannel_id_eq%5D='+id1+'&q%5Bbeginning_gt%5D='+dt#2019-06-10
-		print url
+		#print url
 		hp=GET(url)#.replace('\\"','')
 		#print hp
 		null=''
@@ -279,18 +280,19 @@ class ARH:
 		except: print "errrrr"
 		LL=[]
 		for n in range(total+1):
-			print n
+			#print n
 			url='https://itv.rt.ru/api/v1/channels.json?q%5Binclude_telecasts%5D=false&q%5Bsort%5D=sort_order&q%5Bsdp_id%5D='+sdp_id+'&page='+str(n)#&q%5Bkeyword%5D=&q%5Bfrom_time%5D=2019-06-09
 			hp=GET(url).replace('\\"','')
 			jsn = eval(hp)
 			L=jsn['list']
 			for i in L:
 				try:
-					title = i["name"]
-					id=i["asset_id"]+":"+mfind(i["asset_url"], '/CH_', '/')
-					try:img='https://itv.rt.ru/fe-ct/images/r100x100/'+i["poster"]
-					except: img=''
-					LL.append({'title':title, 'id':id})
+					if i["mode"] == 'uncryptedPvr':
+						title = i["name"]
+						id=i["asset_id"]+":"+mfind(i["asset_url"], '/CH_', '/')
+						try:img='https://itv.rt.ru/fe-ct/images/r100x100/'+i["poster"]
+						except: img=''
+						LL.append({'title':title, 'id':id})
 				except:
 					print i
 		

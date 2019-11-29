@@ -88,20 +88,20 @@ class ARH:
 		pass
 
 	def Streams(self, url):
-		print url
+		#print url
 		hp=GET(url)#+'&start=1552610400&end=1552616100'
 		#print hp
 		L=hp.splitlines()
 		LL=[]
 		Ltmp=[]
 		for i in L:
-			if '#' not in i:
-				if 'redundant' in i:tmp=i[:i.rfind('&')]
-				else: 				tmp=i
-				if tmp not in Ltmp:
+			if '#' not in i and 'redundant' not in i:
+				#if 'redundant' in i:tmp=i[:i.rfind('&')]
+				#else: 				tmp=i
+				#if tmp not in Ltmp:
 					LL.append('https://strm.yandex.ru'+i)
-					Ltmp.append(tmp)
-					print i
+				#	Ltmp.append(tmp)
+					#print i
 		LL.reverse()
 		return LL
 
@@ -109,7 +109,7 @@ class ARH:
 	#Streams ("https://strm.yandex.ru/kal/zvezda_supres/zvezda_supres0.m3u8?from=unknown&imp_id=40&partner_id=278914")
 
 	def Archive(self, id, t):
-		print t
+		#print t
 		dt=t[3]*60*60+t[4]*60
 		
 		if t[2] != time.localtime(time.time())[2]:
@@ -118,8 +118,8 @@ class ARH:
 			st=str(int(time.mktime(t)))
 		
 		et=str(int(time.mktime(t))-86400-14400+dt)
-		print st
-		print et
+		#print st
+		#print et
 		#end_date__from=1552615200&start_date__to=1552701300
 		url='https://frontend.vh.yandex.ru/v22/episodes.json?end_date__from='+et+'&start_date__to='+st+'&parent_id='+id
 		#print url
@@ -171,7 +171,7 @@ class ARH:
 					#id = mfind(url, '&uuid=', '&')
 					id = i["content_id"]
 					L.append({'title':title, 'id':id})
-					print title
+					#print title
 			except:
 				print i
 		#save_aid(serv_id, d)

@@ -200,6 +200,35 @@ def item2(link, name, img=''):
 	
 	return it
 
+def item2_f(cid, gr, name, img=''):
+	it=" <tr style='mso-yfti-irow:1'>\
+	  <td width=366 valign=top style='width:274.75pt;border:solid black 1.0pt;\
+	  mso-border-themecolor:text1;border-top:none;mso-border-top-alt:solid black .5pt;\
+	  mso-border-top-themecolor:text1;mso-border-alt:solid black .5pt;mso-border-themecolor:text1;\
+	  padding:0cm 5.4pt 0cm 5.4pt'>\
+	  <p class=MsoNormal style='margin-bottom:0cm;margin-bottom:.0001pt;line-height:normal'>\
+	  <span lang=EN-US style='mso-ansi-language:EN-US'> [ON] <img border=0 width=20 height=20 src='[IMG]'> <a name='[MARC]'>[NAME]</a></span></p>\
+	  </td>\
+	 </tr>"
+	
+	#if '[V]' in option: 
+	#	onoff = f_on_off2('on_'+cid, 'false')
+	#else:
+	onoff = f_on_off2(cid, 'true')
+	
+	try: it=it.replace('[MARC]',  name[:2])
+	except: pass
+	it=it.replace('[NAME]',  name)
+	#it=it.replace('[LINK]',  link)
+	it=it.replace('[IMG]',   img)
+	it=it.replace('[ON]', onoff)
+	#try:it=it.decode('utf-8')
+	#except: pass
+	#try:it=it.encode('windows-1251')
+	#except: pass
+	
+	return it
+
 def item3(param):
 	it=" <tr style='border:solid black 1.0pt;'>\
 	  <td>[NAME]</td>\

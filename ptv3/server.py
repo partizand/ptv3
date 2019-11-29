@@ -81,7 +81,7 @@ def get_ip():
 ip = get_ip()
 
 
-print('----- Starting PTV3 0.12.0 -----')
+print('----- Starting PTV3 0.12.2 -----')
 print('HELP:     http://'+ip+':'+str(port))
 print('PLAYLIST: http://'+ip+':'+str(port)+'/playlist')
 trigger = True
@@ -205,6 +205,12 @@ tr_list=[
 	'tr_split_2',
 	'tr_split_3',
 	'tr_split_4',
+	'tr_arh1',
+	'tr_arh2',
+	'tr_arh3',
+	'tr_arh4',
+	'tr_arh5',
+	'tr_arh6',
 	'tr_serv21',]
 
 lb_list=[
@@ -675,6 +681,35 @@ def add_to_group(gr):
 		
 		return data
 
+def mlt_add_to_group(gr):
+		fl = open(os.path.join(root_dir,"webui.files", "add2grm.htm"), "r")
+		data = fl.read()
+		fl.close()
+		data=data.replace('[TITLE]', gr)
+		data=data.replace('[GR]', gr)
+		items=''
+		
+		L1=core.open_Groups()
+		Lg=[]
+		for g in L1:
+			if g[0]==gr: Lg = g[1]
+
+		L=core.get_DBC()
+		for i in L:
+			if i['id'] not in Lg:
+				if i['id'] in core.picons.keys(): img = core.picons[i['id']]
+				else:                             img = '\\webui.files\space.jpg'
+				itm = controls.item2_f(i['id'],gr, i['title'], img)
+				try:
+					items+=itm
+				except:
+					print 'err item'
+		
+		data=data.replace('<!--items-->', items)
+		
+		return data
+
+
 def split(id1):
 		fl = open(os.path.join(root_dir,"webui.files", "split.htm"), "r")
 		data = fl.read()
@@ -782,6 +817,14 @@ def get_params(params):
 			if (len(splitparams))==2:
 				param[splitparams[0]]=splitparams[1]
 		return param
+
+def mlt_add2gr(params_string, gr):
+	params=get_params(params_string)
+	Lid = []
+	for id in params.keys():
+		if id not in Lid: Lid.append(id)
+	for id in Lid:
+		core.add_to_gr(id, gr)
 
 def edit_base(params_string):
 	params=get_params(params_string)
@@ -900,10 +943,17 @@ class HttpProcessor(BaseHTTPRequestHandler):
 		print 'POST'
 		print self.path
 		self.data_string = self.rfile.read(int(self.headers['Content-Length']))
-		#print self.data_string
-		edit_base(self.data_string)
-		self.send_response(302)
-		self.send_header('Location', '/editor')
+		print self.data_string
+		if 'add_to_group' in self.path:
+			gr = urllib.unquote_plus(self.path[self.path.find('_group/')+7:])
+			print gr
+			mlt_add2gr(self.data_string, gr)
+			self.send_response(302)
+			self.send_header('Location', '/gr_edit/'+urllib.quote_plus(gr))
+		else:
+			edit_base(self.data_string)
+			self.send_response(302)
+			self.send_header('Location', '/editor')
 		self.end_headers()
 	
 	def do_GET(self):
@@ -1496,7 +1546,7 @@ def get_on(addres):
 			data=group_editor(gr)
 		elif "/add_to_group/" in addres:
 			gr = urllib.unquote_plus(addres[addres.find('group/')+6:])
-			data=add_to_group(gr)
+			data=mlt_add_to_group(gr)
 		elif "/editor" in addres:
 			if '/editor?' in addres:
 				prm=edit_base(addres[addres.find('/editor?')+8:])

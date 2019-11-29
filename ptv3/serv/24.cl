@@ -66,4 +66,4 @@
 {'url': 'http://www.seirsanduk.us/axn-online', 'img': 'http://www.seirsanduk.us/images/tvlogo/axn.png', 'title': 'AXN'},
 {'url': 'http://www.seirsanduk.us/bloomberg-tv-online', 'img': 'http://www.seirsanduk.us/images/tvlogo/bloomberg-tv.png', 'title': 'BLOOMBERG TV'},
 ]
-udata=1573624539.71
+udata=1574832588.25
