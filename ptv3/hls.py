@@ -133,7 +133,7 @@ class HLS():
 
 	def get_head(self, url=''):
 		if url=='': url=self.hls_url
-		if 'peers.tv/var' in url or '178.162' in url:
+		if 'peers.tv' in url or '178.162' in url:#/var
 			t1 = url[:url.find('://')+3]
 			t2 = mfind(url, '://', '/')
 			return t1+t2
@@ -163,7 +163,7 @@ class HLS():
 		if L[self.hls_n][:4]!='http': data_url = head+L[self.hls_n]
 		else:						  data_url = L[self.hls_n]
 		
-		print data_url[-20:]
+		print data_url#[-20:]
 		if data_url not in self.hls_complit:
 			
 			data = self.GET(data_url, head)

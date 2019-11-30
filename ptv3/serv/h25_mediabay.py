@@ -74,7 +74,8 @@ class PZL:
 		for i in L:
 				try:
 					url   = 'mediabay:'+str(i['id'])
-					try:    img   = httpSiteUrl+i['logo']
+					#'http://static.mediabay.com/www_data/newlogos/channels/Uz24.120.png'
+					try:    img   = 'http://static.mediabay.com'+i['logo'].replace('.png','.120.png')
 					except: img   = ''
 					title = i['name'].replace("'","")
 					#print title

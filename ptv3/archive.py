@@ -314,7 +314,7 @@ def upd_canals_db(i):
 	return LL
 
 def get_all_archive():
-	print '==get_all_arh start=='
+	#print '==get_all_arh start=='
 	D={}
 	
 	for i in Lserv:
@@ -332,7 +332,7 @@ def get_all_archive():
 			else: Ls=[]
 			
 			D[i]=Ls
-	print '==get_all_arh end=='
+	#print '==get_all_arh end=='
 	return D
 
 def save_cache(name, cache, sd=0):
@@ -429,19 +429,16 @@ def archive_by_cid(CID, day=0):
 			
 			for cn in cnl:
 				#print CID
-				#print get_ID(cn['title'])
 				if get_ID(cn['title'])==CID:
-					print CID
-					print 'ok'
+					#print CID
+					#print 'ok'
 					aid=cn['id']
-					L=arh.Archive(aid, t)
-					#try:L=arh.Archive(aid, t)
-					#except: 
-					#	print 'except: arh.Archive(aid, t)'
-					#	L=[]
+					try:L=arh.Archive(aid, t)
+					except: L=[]
 					for i in L:
 						st=i['time']
-						rec_id = get_ID(st+i['title'])+'|'+aid+'|'+str(day)
+						#rec_id = get_ID(st+i['title'])+'|'+aid+'|'+str(day)
+						rec_id = st.replace(':','-')+'|'+CID+'|'+str(day)
 						try: 
 							i2=da[st]
 							urls=i2['url']
@@ -455,6 +452,7 @@ def archive_by_cid(CID, day=0):
 							i['url']=[url,]
 							i['id']=rec_id
 							da[st]=i
+					break
 		save_cache(CID, da, day)
 	return da
 
@@ -477,9 +475,18 @@ def archive_by_id(aid, day=0):
 					except: 
 						print 'except: arh.Archive(aid, t)'
 						L=[]
+					#print aid
 					for i in L:
 						st=i['time']
-						rec_id = get_ID(st+i['title'])+'|'+aid+'|'+str(day)
+						#rec_id = get_ID(st+i['title'])+'|'+aid+'|'+str(day)
+						L2=Da[serv_id]
+						CID = '00000000'
+						for j in L2:
+							if j['id'] == aid: 
+								CID = get_ID(j['title'])
+								break
+						
+						rec_id = st.replace(':','-')+'|'+CID+'|'+str(day)
 						url= i['url']
 						try: 
 							i2=da[st]
@@ -498,9 +505,7 @@ def archive_by_id(aid, day=0):
 def get_archive(url):
 	for i in Lserv:
 		ids=i[4:]#.replace('_','-')
-		#print ids
 		if ids in url:
-			#print ids
 			exec ("import "+i+"; serv="+i+".ARH()")
 			return serv.Streams(url)
 	return []
@@ -537,7 +542,7 @@ def streams(urls):
 	
 	return Lpurl
 
-def streams_by_id(uid):
+def streams_by_id_old(uid):
 	ip = settings.get('ip')
 	Lid = uid.split('|')
 	#print Lid
@@ -561,6 +566,25 @@ def streams_by_id(uid):
 					Lpurl.append(curl)
 	return Lpurl
 
+def streams_by_id(uid):
+	ip = settings.get('ip')
+	Lid = uid.split('|')
+	rid=Lid[0].replace('-',':')
+	CID=Lid[1]
+	day=Lid[2]
+	L=archive_by_cid(CID, day)[rid]['url']
+	Lpurl = []
+	for url in L:
+				try:   Lcurl=get_archive(url)
+				except:Lcurl=[]
+				for curl in Lcurl:
+					if 'HLS:' in curl:
+						import base64
+						url = curl[4:]
+						curl= 'http://'+ip+':'+str(port)+'/restream/'+base64.b64encode(url)
+					Lpurl.append(curl)
+	return Lpurl
+
 
 def channels():
 	L=[]
@@ -573,7 +597,7 @@ def channels():
 			if ut not in Lt:
 				Lt.append(ut)
 				cid = get_ID(ut)
-				L.append({'id':i['id'], 'name': ut, 'cid':cid})
+				L.append({'name':ut, 'id':i['id'],'cid':cid})
 	return L
 
 #for i in get_all_archive().keys():
