@@ -81,7 +81,7 @@ def get_ip():
 ip = get_ip()
 
 
-print('----- Starting PTV3 0.12.2 -----')
+print('----- Starting PTV3 0.12.4 -----')
 print('HELP:     http://'+ip+':'+str(port))
 print('PLAYLIST: http://'+ip+':'+str(port)+'/playlist')
 trigger = True

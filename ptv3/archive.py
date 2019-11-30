@@ -433,7 +433,8 @@ def archive_by_cid(CID, day=0):
 					#print CID
 					#print 'ok'
 					aid=cn['id']
-					L=arh.Archive(aid, t)
+					try:L=arh.Archive(aid, t)
+					except: L=[]
 					for i in L:
 						st=i['time']
 						#rec_id = get_ID(st+i['title'])+'|'+aid+'|'+str(day)
@@ -451,6 +452,7 @@ def archive_by_cid(CID, day=0):
 							i['url']=[url,]
 							i['id']=rec_id
 							da[st]=i
+					break
 		save_cache(CID, da, day)
 	return da
 
@@ -476,7 +478,15 @@ def archive_by_id(aid, day=0):
 					#print aid
 					for i in L:
 						st=i['time']
-						rec_id = get_ID(st+i['title'])+'|'+aid+'|'+str(day)
+						#rec_id = get_ID(st+i['title'])+'|'+aid+'|'+str(day)
+						L2=Da[serv_id]
+						CID = '00000000'
+						for j in L2:
+							if j['id'] == aid: 
+								CID = get_ID(j['title'])
+								break
+						
+						rec_id = st.replace(':','-')+'|'+CID+'|'+str(day)
 						url= i['url']
 						try: 
 							i2=da[st]
@@ -587,7 +597,7 @@ def channels():
 			if ut not in Lt:
 				Lt.append(ut)
 				cid = get_ID(ut)
-				L.append({'name':ut, 'cid':cid})#'id':i['id'],
+				L.append({'name':ut, 'id':i['id'],'cid':cid})
 	return L
 
 #for i in get_all_archive().keys():
