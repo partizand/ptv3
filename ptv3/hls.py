@@ -69,7 +69,7 @@ class HLS():
 			#|User-Agent=Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:35.0) Gecko/20100101 Firefox/35.0
 			req.add_header('Accept', 'text/html, application/xml, application/xhtml+xml, */*')
 			req.add_header('Accept-Language', 'ru,en;q=0.9')
-			response = urllib2.urlopen(req, timeout=3)
+			response = urllib2.urlopen(req, timeout=5)
 			data=response.read()
 			response.close()
 			#save_cache(url, data)
@@ -133,7 +133,7 @@ class HLS():
 
 	def get_head(self, url=''):
 		if url=='': url=self.hls_url
-		if 'peers.tv' in url or '178.162' in url:#/var
+		if 'peers.tv/playlist' in url or '178.162' in url:#/var
 			t1 = url[:url.find('://')+3]
 			t2 = mfind(url, '://', '/')
 			return t1+t2
@@ -141,13 +141,13 @@ class HLS():
 			return url[:url.rfind('/')+1]
 		
 	def get_data2(self):
-		#print '============= get_data ==============='
+		#print '============= get_data2 ==============='
 		if self.hls_n+1>=len(self.hls_list): 
 			self.hls_list = []
 			self.hls_n = 0
 		
 		if self.hls_list == []: 
-			#print self.hls_url
+			print self.hls_url
 			list = self.get_list(self.hls_url)
 			if list == []: return None#'error '+str(self.list_index)
 			else: self.hls_list = list
@@ -160,6 +160,7 @@ class HLS():
 			head = self.hls_head
 		
 		#print head
+		#print L
 		if L[self.hls_n][:4]!='http': data_url = head+L[self.hls_n]
 		else:						  data_url = L[self.hls_n]
 		

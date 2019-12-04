@@ -46,10 +46,22 @@ def mfind(t,s,e):
 	r2=r[:r.find(e)]
 	return r2
 
-class PZL:
+m3u = ''
 
+class PZL:
 	def Streams(self, url):
+		global m3u
+		LL=[]
 		CID = url.replace('peers:','')
+		try:
+			if m3u == '':
+				m3u=getURL('https://api.peers.tv/iptv/2/playlist.m3u')
+			for i in m3u.splitlines():
+				if "/"+CID+"/" in i: LL.append(i)
+			print 1
+			if LL!=[]: return LL
+		except: pass
+		print 2
 		stream1='http://hls.peers.tv/streaming/'+CID+'/16/tvrecw/playlist.m3u8'#+'|User-Agent=DuneHD/1.0.3'
 		stream2='http://hls.peers.tv/streaming/'+CID+'/16/variable.m3u8'#+'|User-Agent=DuneHD/1.0.3'
 		stream3='http://hls.peers.tv/streaming/'+CID+'/126/tvrecw/playlist.m3u8'#+'|User-Agent=DuneHD/1.0.3'
@@ -58,11 +70,12 @@ class PZL:
 		if test(stream2): return [stream2,]
 		if test(stream3): return [stream3,]
 		if test(stream4): return [stream4,]
-
-		return [stream1+'|User-Agent=DuneHD/1.0.3',stream2+'|User-Agent=DuneHD/1.0.3',]
+		print 3
+		return []#stream1+'|User-Agent=DuneHD/1.0.3',stream2+'|User-Agent=DuneHD/1.0.3',]
 
 	def Canals(self):
 		print 'ucom'
+		#https://api.peers.tv/registry/2/whereami.json #интересные данные
 		h=getURL('http://api.peers.tv/tvguide/2/channels.json').replace('\\/','/')
 		true = True
 		false = False

@@ -930,32 +930,35 @@ def pars_xmltv3(xml):
 	#epg_id=get_ttv_epg_id()
 	n=0
 	for i in L:
-		if "<channel " in i:
-			channel_id=i[i.find('id="')+4:i.find('"><display')]
-			name=i[i.find('<display-name>')+14:i.find('</display-name>')]
-			cid=get_id(name)
-			#if cid not in EPG.keys(): EPG
-			channel[channel_id]={'id':cid, 'name':name}
-		if "<programme " in i:
-			n+=1
-			title=i[i.find('<title lang="ru">')+17:i.find('</title>')]
-			if 'desc3' in i: desc=i[i.find('<desc lang="ru">')+16:i.find('</desc>')]
-			else: desc=''
-			if '<category' in i: cat=i[i.find('<category lang="ru">')+20:i.find('</category>')]
-			else: cat=''
-			
-			start_at=i[i.find('start="')+7:i.find(' +0300')]
-			ttv_id=i[i.find('channel="')+9:i.find('">')]
-			cid=channel[ttv_id]['id']
-			cnm=channel[ttv_id]['name']
-			
-			strptime=time.strptime(start_at , '%Y%m%d%H%M%S')
-			tms=str(time.mktime(strptime))
-			
-			img=''
-			
-			if cid not in EPG.keys(): EPG[cid] = {'title':cnm}
-			EPG[cid][tms]={"title":rt(title), 'img': img, 'plot': desc, 'type': cat}
+		try:
+			if "<channel " in i:
+				channel_id=i[i.find('id="')+4:i.find('"><display')]
+				name=i[i.find('<display-name>')+14:i.find('</display-name>')]
+				cid=get_id(name)
+				#if cid not in EPG.keys(): EPG
+				channel[channel_id]={'id':cid, 'name':name}
+			if "<programme " in i:
+				n+=1
+				title=i[i.find('<title lang="ru">')+17:i.find('</title>')]
+				if 'desc3' in i: desc=i[i.find('<desc lang="ru">')+16:i.find('</desc>')]
+				else: desc=''
+				if '<category' in i: cat=i[i.find('<category lang="ru">')+20:i.find('</category>')]
+				else: cat=''
+				
+				start_at=i[i.find('start="')+7:i.find(' +0300')]
+				ttv_id=i[i.find('channel="')+9:i.find('">')]
+				cid=channel[ttv_id]['id']
+				cnm=channel[ttv_id]['name']
+				
+				strptime=time.strptime(start_at , '%Y%m%d%H%M%S')
+				tms=str(time.mktime(strptime))
+				
+				img=''
+				
+				if cid not in EPG.keys(): EPG[cid] = {'title':cnm}
+				EPG[cid][tms]={"title":rt(title), 'img': img, 'plot': desc, 'type': cat}
+		except:
+			pass
 
 def pars_xmltv2(xml):
 	xml=xml.replace(chr(10),"").replace(chr(13),"").replace("<programme ", "\n<programme ").replace("<channel ", "\n<channel ").replace("&quot;", '"')
