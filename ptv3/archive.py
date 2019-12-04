@@ -402,13 +402,6 @@ def archive(name, day=0):
 							i['url']=[url,]
 							da[st]=i
 		save_cache(name, da, day)
-	'''
-	for d in da.keys():
-			urls=da[d]['url']
-			title=da[d]['title']
-			st=da[d]['time']
-			add_item (st+" - "+rt(title), "play2", urls, st )
-	'''
 	return da
 
 def archive_by_cid(CID, day=0):
@@ -424,42 +417,42 @@ def archive_by_cid(CID, day=0):
 		Lm=[]
 		Da=get_all_archive()
 		for serv_id in Da.keys():
-			cnl = Da[serv_id]
-			exec ("import "+serv_id+"; arh="+serv_id+".ARH()")
-			
-			for cn in cnl:
-				#print CID
-				if get_ID(cn['title'])==CID:
+			if settings.get("arh"+serv_id)!= 'false':
+				cnl = Da[serv_id]
+				exec ("import "+serv_id+"; arh="+serv_id+".ARH()")
+				
+				for cn in cnl:
 					#print CID
-					#print 'ok'
-					aid=cn['id']
-					try:L=arh.Archive(aid, t)
-					except: L=[]
-					for i in L:
-						st=i['time']
-						#rec_id = get_ID(st+i['title'])+'|'+aid+'|'+str(day)
-						rec_id = st.replace(':','-')+'|'+CID+'|'+str(day)
-						try: 
-							i2=da[st]
-							urls=i2['url']
-							url=i['url']
-							urls.append(url)
-							i2['url']=urls
-							i2['id']=rec_id
-							da[st]=i2
-						except: 
-							url=i['url']
-							i['url']=[url,]
-							i['id']=rec_id
-							da[st]=i
-					break
+					if get_ID(cn['title'])==CID:
+						#print CID
+						#print 'ok'
+						aid=cn['id']
+						try: L=arh.Archive(aid, t)
+						except: L=[]
+						for i in L:
+							st=i['time']
+							#rec_id = get_ID(st+i['title'])+'|'+aid+'|'+str(day)
+							rec_id = st.replace(':','-')+'|'+CID+'|'+str(day)
+							try: 
+								i2=da[st]
+								urls=i2['url']
+								url=i['url']
+								urls.append(url)
+								i2['url']=urls
+								i2['id']=rec_id
+								da[st]=i2
+							except: 
+								url=i['url']
+								i['url']=[url,]
+								i['id']=rec_id
+								da[st]=i
+						break
 		save_cache(CID, da, day)
 	return da
 
 def archive_by_id(aid, day=0):
 	ssec=int(day)*24*60*60
 	t=time.localtime(time.time() - ssec)
-	#add_item ('[COLOR FF10FF10][B]'+time.strftime('%d.%m.%Y',t)+" - "+unmark(name)+"[/B][/COLOR]", "select_date", 'url', '0' )
 	cash=get_cache(aid)
 	if cash!={}:
 		print 'cache'
@@ -470,6 +463,7 @@ def archive_by_id(aid, day=0):
 		Lm=[]
 		Da=get_all_archive()
 		for serv_id in Da.keys():
+			if settings.get("arh"+serv_id)!= 'false':
 					exec ("import "+serv_id+"; arh="+serv_id+".ARH()")
 					try:L=arh.Archive(aid, t)
 					except: 
@@ -518,18 +512,22 @@ def stream(url):
 	else:         return Lpurl[0]
 
 def stream_by_id(uid):
+	ip = settings.get('ip')
 	Lid = uid.split('|')
-	#print Lid
-	rid=Lid[0]
-	aid=Lid[1]
+	rid=Lid[0].replace('-',':')
+	CID=Lid[1]
 	day=Lid[2]
-	D=archive_by_id(aid, day)
-	for k in D.keys():
-		itm=D[k]
-		if itm['id'].split('|')[0]==rid: 
-			rec=get_archive(itm['url'][0])[0]
-			#print rec
-			return rec
+	L=archive_by_cid(CID, day)[rid]['url']
+	Lpurl = []
+	for url in L:
+				try:   Lcurl=get_archive(url)
+				except:Lcurl=[]
+				for curl in Lcurl:
+					if 'HLS:' in curl:
+						import base64
+						url = curl[4:]
+						curl= 'http://'+ip+':'+str(port)+'/restream/'+base64.b64encode(url)
+					return rec
 	return ''
 
 def streams(urls):

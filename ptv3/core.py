@@ -1251,7 +1251,7 @@ def streams(id):
 			sn+=1
 			create_thread({'url':url, 'n':sn})
 		
-		for t in range(4):
+		for t in range(6):
 			if len(Lthread) == len(urls): break
 			#if len(Lthread) > 1 and fplay =='true': break
 			time.sleep(0.5)

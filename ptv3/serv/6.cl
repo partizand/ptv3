@@ -93,4 +93,4 @@
 {'url': 'vkluchitv:setanta_sport', 'group': '\xd0\x92\xd0\xba\xd0\xbb\xd1\x8e\xd1\x87\xd0\xb8\xd0\xa2\xd0\x92', 'img': 'http://telecdn.net/img/setanta_sport.png', 'title': 'Setanta Sports'},
 {'url': 'vkluchitv:mir', 'group': '\xd0\x92\xd0\xba\xd0\xbb\xd1\x8e\xd1\x87\xd0\xb8\xd0\xa2\xd0\x92', 'img': 'http://telecdn.net/img/mir.png', 'title': '\xd0\x9c\xd0\xb8\xd1\x80'},
 ]
-udata=1573373648.58
+udata=1575206783.34
