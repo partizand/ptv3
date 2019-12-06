@@ -39,22 +39,26 @@ def mfind(t,s,e):
 	return r2
 
 def get_lime(url):
+	print 'lime'
 	hp=getURL(url)
 	link = mfind(hp, 'file:"', '"')
 	return link
 
 def get_mediavitrina(url):
+	print 'mediavitrina'
 	hp=getURL(url)
+	print hp
 	url2 = mfind(hp, "sources: '", "'")
+	print url2
 	hp2=getURL(url2)
 	link = mfind(hp2, 'hls":["', '"')
 	return link
 
 def get_ya(url):
 			print url
-			if '/kal/' not in url: return [url,]
+			#if '/kal/' not in url: return [url,]
 			hp=getURL(url)
-			print hp
+			#print hp
 			L=hp.splitlines()
 			link=''
 			LL=[]
@@ -78,13 +82,18 @@ class PZL:
 	def Streams(self, url):
 		#try:
 		hp=getURL(url)
+		#print hp
 		if 'file:"' in hp: 
+			print 'file'
 			link = mfind(hp, 'file:"', '"')
 		elif 'iframe' in hp:
+			print 'iframe'
 			player = mfind(hp, '<iframe src="', '"')
+			print player
 			if 'lime-tv'      in player: link = get_lime(player)
 			if 'mediavitrina' in player: link = get_mediavitrina(player)
 			if 'yandex'       in player: link = get_ya(player)
+		print link
 		return [link]
 		#except:
 		#	return []

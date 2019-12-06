@@ -1,3 +1,7 @@
+0.12.9 https://cloud.mail.ru/public/5xra/L6UgXJzLa
+- добавил tvin.su
+- если все потоки для канала заблокированы. канал не отображается (после перезапуска) 
+
 3.12.8 - https://cloud.mail.ru/public/4p66/4nDXtvnFR
 - поправил peers.tv 
 

@@ -749,7 +749,10 @@ def get_cahe_list(s):
 		fl = open(fp, "r")
 		t=fl.read()
 		fl.close()
-		L=eval(t[t.find('['):t.rfind(']')+1])
+		L2=eval(t[t.find('['):t.rfind(']')+1])
+		L=[]
+		for i in L2:
+			if inBL(i['url']) == False: L.append(i)
 		add_cahe_lists(s, tm, L)
 		return L
 
