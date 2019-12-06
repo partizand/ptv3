@@ -3,8 +3,8 @@
 
 import os, cookielib, urllib, urllib2, time
 
-serv_id = '13'
-siteUrl = 'lime-tv.ru'
+serv_id = '28'
+siteUrl = 'tvin.su'
 httpSiteUrl = 'http://' + siteUrl
 
 def ru(x):return unicode(x,'utf8', 'ignore')
@@ -15,6 +15,7 @@ def getURL(url, Referer = httpSiteUrl):
 	urllib2.install_opener(urllib2.build_opener()) 
 	req = urllib2.Request(url)
 	req.add_header('User-Agent', 'Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60')
+	#req.add_header('User-Agent', 'DuneHD/1.0.3')
 	req.add_header('Accept', 'text/html, application/xml, application/xhtml+xml, */*')
 	req.add_header('Accept-Language', 'ru,en;q=0.9')
 	req.add_header('Referer', Referer)
@@ -22,6 +23,7 @@ def getURL(url, Referer = httpSiteUrl):
 	link=response.read()
 	response.close()
 	return link
+
 
 def mfindal(http, ss, es):
 	L=[]
@@ -38,23 +40,11 @@ def mfind(t,s,e):
 	r2=r[:r.find(e)]
 	return r2
 
-def get_lime(url):
-	hp=getURL(url)
-	link = mfind(hp, 'file:"', '"')
-	return link
-
-def get_mediavitrina(url):
-	hp=getURL(url)
-	url2 = mfind(hp, "sources: '", "'")
-	hp2=getURL(url2)
-	link = mfind(hp2, 'hls":["', '"')
-	return link
-
-def get_ya(url):
-			print url
+def ya(url):
+			#print url
 			if '/kal/' not in url: return [url,]
 			hp=getURL(url)
-			print hp
+			#print hp
 			L=hp.splitlines()
 			link=''
 			LL=[]
@@ -71,43 +61,36 @@ def get_ya(url):
 			LL.reverse()
 			return LL
 
+
 class PZL:
-	def __init__(self):
-		pass
 
 	def Streams(self, url):
-		#try:
-		hp=getURL(url)
-		if 'file:"' in hp: 
-			link = mfind(hp, 'file:"', '"')
-		elif 'iframe' in hp:
-			player = mfind(hp, '<iframe src="', '"')
-			if 'lime-tv'      in player: link = get_lime(player)
-			if 'mediavitrina' in player: link = get_mediavitrina(player)
-			if 'yandex'       in player: link = get_ya(player)
-		return [link]
-		#except:
-		#	return []
+		url = url.replace('tvinsu:',httpSiteUrl+'/view-tv-online/')
+		h=getURL(url)
+		if 'frontend.vh.yandex.ru' in h:
+			url2 = mfind(h,'20px;" src="','"')
+			h2=getURL(url2)
+			url3 = mfind(h2,'content_url" content="','"')
+			return ya(url3)
+		else:
+			stream = mfind(h,'file:"','"')
+		return [stream,]
+
 
 	def Canals(self):
-		print ''
-		http=getURL(httpSiteUrl)
-		ss='<div class="short">'
-		es='<div class="short-ya">'
-		L=mfindal(http,ss,es)
+		print 'tvinsu'
+		h=getURL(httpSiteUrl+'/tv-channels/all')
+		L=mfindal(h, '<a href="/view-tv', '/></a>    </div>')
 		LL=[]
 		for i in L:
-			try:
-				url   = mfind(i,'<a href="','"')
-				img   = 'http://lime-tv.ru'+mfind(i,'<img src="','"')
-				title = mfind(i,'title="','"')
-				title = title.replace('Смотреть','').replace('онлайн','').strip()
-				#title=title.replace('Еда ТВ','ЕДА HD')
-				
-				LL.append({'url':url, 'img':img, 'title':title, 'group':''})
-			except:
-				pass
-		
+				try:
+					print i
+					url   = 'tvinsu:'+mfind(i,'view-tv-online/','"')
+					img   =  mfind(i,'<img src="','"')
+					title =  mfind(i,'title="','"').replace('Смотреть','').replace('онлайн','').replace('прямой эфир','').strip()
+					LL.append({'url':url, 'img':img, 'title':title, 'group':''})
+				except:
+					pass
 		return LL
 
 #p=PZL()

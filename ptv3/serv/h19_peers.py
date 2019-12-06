@@ -57,7 +57,16 @@ class PZL:
 			if m3u == '':
 				m3u=getURL('https://api.peers.tv/iptv/2/playlist.m3u')
 			for i in m3u.splitlines():
-				if "/"+CID+"/" in i: LL.append(i)
+				if "/"+CID+"/" in i: 
+					if 'variable' in i:
+						try:
+							m3u2 = getURL(i)
+							for j in m3u2.splitlines():
+								if '#' not in j: LL.append(i.replace('variable.m3u8',j))
+						except:
+							LL.append(i)
+					else:
+							LL.append(i)
 			print 1
 			if LL!=[]: return LL
 		except: pass

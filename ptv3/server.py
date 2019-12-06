@@ -6,6 +6,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 import threading, SocketServer, BaseHTTPServer
 quit_event = threading.Event()
 
+print('----- Starting PTV3 0.12.9 -----')
 
 import sys, os, json
 import time
@@ -81,8 +82,7 @@ def get_ip():
 ip = get_ip()
 
 
-print('----- Starting PTV3 0.12.8 -----')
-print('HELP:     http://'+ip+':'+str(port))
+print('OPTION:   http://'+ip+':'+str(port))
 print('PLAYLIST: http://'+ip+':'+str(port)+'/playlist')
 trigger = True
 
@@ -181,6 +181,7 @@ tr_list=[
 	'tr_upd24',
 	'tr_upd25',
 	'tr_upd27',
+	'tr_upd28',
 	'tr_upd31',
 	'tr_upd34',
 	'tr_upd35',
@@ -226,6 +227,7 @@ upt_list=[
 	'id_upt24',
 	'id_upt25',
 	'id_upt27',
+	'id_upt28',
 	'id_upt31',
 	'id_upt32',
 	'id_upt33',
