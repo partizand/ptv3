@@ -85,6 +85,7 @@ class PZL:
 	def Canals(self):
 		print 'ucom'
 		#https://api.peers.tv/registry/2/whereami.json #интересные данные
+		m3u=getURL('https://api.peers.tv/iptv/2/playlist.m3u')
 		h=getURL('http://api.peers.tv/tvguide/2/channels.json').replace('\\/','/')
 		true = True
 		false = False
@@ -94,13 +95,31 @@ class PZL:
 		for i in L:
 				try:
 					#print i
-					url   = 'peers:'+i['alias']
-					try:    img   = i['logoURL']
-					except: img   = ''
-					title = i['title']
-					LL.append({'url':url, 'img':img, 'title':title, 'group':''})
+					CID=i['alias']
+					if 'cam2' not in CID:
+						if "/"+CID+"/" in m3u: 
+							valid = True
+						else:
+							valid = false
+							streams=['http://hls.peers.tv/streaming/'+CID+'/126/variable.m3u8', 'http://hls.peers.tv/streaming/'+CID+'/16/variable.m3u8', 'http://hls.peers.tv/streaming/'+CID+'/16/tvrecw/playlist.m3u8']
+							for s in streams:
+								time.sleep(1)
+								if test(s): 
+									valid = True
+									print s
+									break
+						if valid:
+							url   = 'peers:'+i['alias']
+							try:    img   = i['logoURL']
+							except: img   = ''
+							title = i['title']
+							print CID
+							LL.append({'url':url, 'img':img, 'title':title, 'group':''})
+					else:
+						break
 				except:
 					pass
+					print 'err'
 		return LL
 
 #p=PZL()

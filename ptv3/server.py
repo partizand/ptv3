@@ -6,7 +6,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 import threading, SocketServer, BaseHTTPServer
 quit_event = threading.Event()
 
-print('----- Starting PTV3 0.12.9 -----')
+print('----- Starting PTV3 0.13.2 -----')
 
 import sys, os, json
 import time
@@ -180,6 +180,7 @@ tr_list=[
 	'tr_upd23',
 	'tr_upd24',
 	'tr_upd25',
+	'tr_upd26',
 	'tr_upd27',
 	'tr_upd28',
 	'tr_upd31',
@@ -226,6 +227,7 @@ upt_list=[
 	'id_upt23',
 	'id_upt24',
 	'id_upt25',
+	'id_upt26',
 	'id_upt27',
 	'id_upt28',
 	'id_upt31',
@@ -545,7 +547,9 @@ def select_picon(id):
 		except:title=''
 		data=data.replace('[TITLE]', title)
 		title=title.replace(' TV', '').replace(' ТВ', '').replace(' тв', '')
-		L = picondb.get(title)
+		L = core.get_all_picons(id)
+		L1 = picondb.get(title)
+		L.extend(L1)
 		items=''
 		for img in L:
 				itm = controls.item6("/picon/"+id+"/dl/"+base64.b64encode(img), img)
@@ -555,7 +559,6 @@ def select_picon(id):
 		data=data.replace('<!--items-->', items)
 		
 		return data
-	
 
 
 def info(id):
@@ -945,7 +948,7 @@ class HttpProcessor(BaseHTTPRequestHandler):
 		print 'POST'
 		print self.path
 		self.data_string = self.rfile.read(int(self.headers['Content-Length']))
-		print self.data_string
+		#print self.data_string
 		if 'add_to_group' in self.path:
 			gr = urllib.unquote_plus(self.path[self.path.find('_group/')+7:])
 			print gr
@@ -1284,7 +1287,7 @@ class HttpProcessor(BaseHTTPRequestHandler):
 			while trigger:
 					n+=1
 					#print n
-					part=HLS.get_data()
+					part=HLS.get_data_buf()
 					if part !=None: 
 						self.wfile.write(part)
 						er=0
@@ -1296,6 +1299,7 @@ class HttpProcessor(BaseHTTPRequestHandler):
 						time.sleep(0.5)
 						part = 'None'
 			print '== HLS END =='
+		
 		elif head[:3]=='MS:': 
 			print '== MS =='
 			BSL = eval(data[3:])
@@ -1332,8 +1336,7 @@ class HttpProcessor(BaseHTTPRequestHandler):
 						n=0
 						if '/ace/' in curl or '/udp/' in curl:  MS=bitstream.BS(curl)
 						else: time.sleep(0.1)
-
-
+		
 		elif head[:3]=='MS2:': 
 			print '== MS =='
 			LGET.append(self.path)
@@ -1488,7 +1491,7 @@ def get_on(addres):
 			if nmf in fch.keys():
 				data = fch[nmf]
 			else:
-				fl = open(os.path.join(root_dir,"webui.files", nmf), "rb")#
+				fl = open(os.path.join(root_dir,"webui.files", nmf), "rb")
 				data = fl.read()
 				fl.close()
 				fch[nmf]=data

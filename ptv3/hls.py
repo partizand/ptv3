@@ -13,7 +13,7 @@ def mfind(t,s,e):
 	return r2
 
 def get_UA(url):
-	L=[['peers.tv','DuneHD/1.0.3'],]
+	L=[['peers.tv','DuneHD/1.0.3'],['193.124.177.175','TV+Android/1.1.5.2 (Linux;Android 7.1.1) ExoPlayerLib/2.9.1']]
 	for i in L:
 		if i[0] in url: return i[1]
 	return 'Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60'
@@ -40,6 +40,15 @@ def get_cache(url):
 		return DT
 	except:
 		return None
+
+def normal(data_url):
+	url=''
+	L=data_url.split('/')
+	L2=[]
+	for i in L:
+		if i not in L2: url+=i+'/'
+		L2.append(i)
+	return url[:-1]
 
 class HLS():
 	def __init__(self, hls_url, header='', list_index = -1):
@@ -133,7 +142,7 @@ class HLS():
 
 	def get_head(self, url=''):
 		if url=='': url=self.hls_url
-		if 'peers.tv/playlist' in url or '178.162' in url:#/var
+		if 'peers.tv/playlist' in url :#or '193.124.177.175' in url 178.162
 			t1 = url[:url.find('://')+3]
 			t2 = mfind(url, '://', '/')
 			return t1+t2
@@ -159,10 +168,12 @@ class HLS():
 		else:
 			head = self.hls_head
 		
-		#print head
+		print head
 		#print L
 		if L[self.hls_n][:4]!='http': data_url = head+L[self.hls_n]
 		else:						  data_url = L[self.hls_n]
+		
+		data_url = normal(data_url)
 		
 		print data_url#[-20:]
 		if data_url not in self.hls_complit:
@@ -186,6 +197,32 @@ class HLS():
 		if self.buf == None:
 			self.buf = self.get_data2()
 			if self.buf == None: return None
+		elif len(self.buf)< block_sz:
+			dt = self.get_data2()
+			if dt!=None:
+				self.buf = self.buf+dt
+			else: return None
+		
+		data = self.buf[:block_sz]
+		self.buf=self.buf[block_sz:]
+		return data
+
+	def get_data_buf(self):
+		block_sz = 8192
+		buf_sz   = 1024000
+		try: 
+			szb = len(self.buf)
+			if szb < buf_sz+block_sz: print szb
+		except: print 0
+		if self.buf == None:
+			self.buf = self.get_data2()
+			if self.buf == None: return None
+		
+		elif len(self.buf)< buf_sz and len(self.buf)> block_sz:
+			dt = self.get_data2()
+			if dt!=None:
+				self.buf = self.buf+dt
+		
 		elif len(self.buf)< block_sz:
 			dt = self.get_data2()
 			if dt!=None:

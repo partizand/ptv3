@@ -674,6 +674,24 @@ def get_all_channeles():
 	#print '==get_all_channeles end=='
 	return L
 
+def get_all_picons(id):
+	print '==get_all_picons=='
+	L=[]
+	LL=[]
+	for i in Lserv:
+				serv_id=str(int(i[1:3]))
+				print serv_id
+				try:Ls=get_cahe_list(serv_id)
+				except:Ls=[]
+				if Ls==[]:
+					utm = get_cahe_time(serv_id)
+					if time.time()-utm > 600:
+						try: Ls=upd_canals_db(i)
+						except: Ls=[]
+				L.extend(Ls)
+	for i in L:
+		if get_ID(i['title']) == id and i['img']!='': LL.append(i['img'])
+	return LL
 
 def get_all_serv(id):
 	L=[]
@@ -922,8 +940,8 @@ def get_stream(url):
 					Lcurl = serv.Streams(url)
 					Lpurl = []
 					try:
-						for curl in Lcurl:
-							if 'zabava' in curl or 'vrzh-htlive' in curl or 'yandex' in curl or 'ucom.am' in curl or '/udp/' in curl or 'peers.tv' in curl:
+						for curl in Lcurl: 
+							if 'zabava' in curl or 'vrzh-htlive' in curl or 'yandex' in curl or 'ucom.am' in curl or '/udp/' in curl or 'peers.tv' in curl or '193.124.177.175' in curl:
 								import base64
 								ip = settings.get('ip')
 								curl= 'http://'+ip+':'+str(port)+'/restream/'+base64.b64encode(curl)
