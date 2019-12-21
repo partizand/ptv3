@@ -834,8 +834,8 @@ def get_dict_groups():
 				D[id]=l_gr
 	return D
 
-def get_cn_groups(cid):
-	D=get_dict_groups()
+def get_cn_groups(cid, D={}):
+	if D=={}: D=get_dict_groups()
 	if cid in D.keys(): return D[cid]
 	else: return []
 
@@ -1060,8 +1060,7 @@ def get_base(mode = 'none'):
 	Lt=[]
 	lid=[]
 	
-	
-	
+	DGR=get_dict_groups()
 	for id in CL:
 		lid.append(id)
 		Lnm=DBC[id]['names']
@@ -1070,13 +1069,12 @@ def get_base(mode = 'none'):
 		for n in Lnm:
 			id2 = get_ID(n)#CRC32(n)
 			lid.append(id2)
-				
-		if id not in BL:
-			
-			if mode!='false':
-				groups = get_cn_groups(id)#DBC[id]['group']
-				name = DBC[id]['title']
-				if id in enb_list:
+		
+		if mode!='false':
+				if id in enb_list and id not in BL:
+					groups = get_cn_groups(id, DGR)#DBC[id]['group']
+					name = DBC[id]['title']
+					
 					if editor_sort == 'group': sort = groups
 					else:                      sort = uni_mark(name)
 						
@@ -1085,6 +1083,7 @@ def get_base(mode = 'none'):
 					
 					if sort=='' or sort==[]: sort='яяяяяяяяяяя'
 					L.append({'00':sort,'title':name,'id':id,'group':groups, 'enable':True, 'split':spl, 'picon':cover})
+	print len(L)
 	
 	if mode!='true':
 		for i in Lserv:
@@ -1112,6 +1111,7 @@ def get_base(mode = 'none'):
 									
 									if sort=='' or sort==['',]: sort='яяяяяяяяяяя'
 									L.append({'00':sort,'title':name,'id':id,'group':[group,], 'enable':False, 'split':False, 'picon':cover})
+	
 	L.sort()
 	return L
 	

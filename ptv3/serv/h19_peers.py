@@ -14,8 +14,8 @@ def xt(x):return xbmc.translatePath(x)
 def getURL(url, Referer = httpSiteUrl):
 	urllib2.install_opener(urllib2.build_opener()) 
 	req = urllib2.Request(url)
-	#req.add_header('User-Agent', 'Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60')
-	req.add_header('User-Agent', 'DuneHD/1.0.3')
+	req.add_header('User-Agent', 'Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60')
+	#req.add_header('User-Agent', 'DuneHD/1.0.3')
 	req.add_header('Accept', 'text/html, application/xml, application/xhtml+xml, */*')
 	req.add_header('Accept-Language', 'ru,en;q=0.9')
 	req.add_header('Referer', Referer)
@@ -26,7 +26,9 @@ def getURL(url, Referer = httpSiteUrl):
 
 def test(url):
 	try:
-		getURL(url)
+		r=getURL(url)
+		if '/block/' in r: return False
+		#print r
 		return True
 	except:
 		return False
@@ -47,10 +49,19 @@ def mfind(t,s,e):
 	return r2
 
 m3u = ''
+ttm=0
+token=''
 
 class PZL:
 	def Streams(self, url):
-		global m3u
+		global m3u, ttm, token
+		if token == '' or time.time()-ttm>3600:
+			print 'GET TOKEN'
+			token=mfind(getURL('https://peers.tv/otvrus/'),"window.AUTH_TOKEN = '","';")
+			ttm=time.time()
+		tail = '?token='+token#+'&client=81'
+		#print token
+		
 		LL=[]
 		CID = url.replace('peers:','')
 		try:
@@ -60,26 +71,32 @@ class PZL:
 				if "/"+CID+"/" in i: 
 					if 'variable' in i:
 						try:
-							m3u2 = getURL(i)
+							m3u2 = getURL(i+tail)
 							for j in m3u2.splitlines():
-								if '#' not in j: LL.append(i.replace('variable.m3u8',j))
+								if '#' not in j: LL.append(i.replace('variable.m3u8',j+tail))
 						except:
-							LL.append(i)
+							LL.append(i+tail)
 					else:
-							LL.append(i)
-			print 1
+							LL.append(i+tail)
 			if LL!=[]: return LL
 		except: pass
-		print 2
-		stream1='http://hls.peers.tv/streaming/'+CID+'/16/tvrecw/playlist.m3u8'#+'|User-Agent=DuneHD/1.0.3'
-		stream2='http://hls.peers.tv/streaming/'+CID+'/16/variable.m3u8'#+'|User-Agent=DuneHD/1.0.3'
-		stream3='http://hls.peers.tv/streaming/'+CID+'/126/tvrecw/playlist.m3u8'#+'|User-Agent=DuneHD/1.0.3'
-		stream4='http://hls.peers.tv/streaming/'+CID+'/126/variable.m3u8'#+'|User-Agent=DuneHD/1.0.3'
+		
+		stream1='http://hls.peers.tv/streaming/'+CID+'/16/tvrecw/playlist.m3u8'+tail#+'|User-Agent=DuneHD/1.0.3'
+		stream2='http://hls.peers.tv/streaming/'+CID+'/16/variable.m3u8'+tail#+'|User-Agent=DuneHD/1.0.3'
+		stream3='http://hls.peers.tv/streaming/'+CID+'/126/tvrecw/playlist.m3u8'+tail#+'|User-Agent=DuneHD/1.0.3'
+		stream4='http://hls.peers.tv/streaming/'+CID+'/126/variable.m3u8'+tail#+'|User-Agent=DuneHD/1.0.3'
+		
 		if test(stream1): return [stream1,]
-		if test(stream2): return [stream2,]
+		if test(stream2): 
+			LL=[]
+			m3u2 = getURL(stream2+tail)
+			for j in m3u2.splitlines():
+				if '#' not in j: LL.append(stream2.replace('variable.m3u8',j+tail))
+			if LL!=[]: return LL
+			#return [stream2,]
 		if test(stream3): return [stream3,]
 		if test(stream4): return [stream4,]
-		print 3
+		
 		return []#stream1+'|User-Agent=DuneHD/1.0.3',stream2+'|User-Agent=DuneHD/1.0.3',]
 
 	def Canals(self):

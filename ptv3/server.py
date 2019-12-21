@@ -6,7 +6,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 import threading, SocketServer, BaseHTTPServer
 quit_event = threading.Event()
 
-print('----- Starting PTV3 0.13.2 -----')
+print('----- Starting PTV3 0.13.5 -----')
 
 import sys, os, json
 import time
@@ -391,6 +391,7 @@ class cn_editor():
 		return dt[:dt.find('<!--items-->')]
 	
 	def list(self):
+		t=time.time()
 		L = core.get_base()
 		return L
 	
@@ -1043,6 +1044,7 @@ class HttpProcessor(BaseHTTPRequestHandler):
 		self.end_headers()
 		
 		if head[:3]=='CLE':
+			print '---- CLE ----'
 			CLE = cn_editor()
 			self.wfile.write(CLE.head())
 			L  = CLE.list()
@@ -1050,6 +1052,7 @@ class HttpProcessor(BaseHTTPRequestHandler):
 				itm = CLE.item(i)
 				self.wfile.write(itm)
 			self.wfile.write(CLE.end())
+			print '---- CLE END ----'
 		
 		
 		elif head[:3]=='XML':

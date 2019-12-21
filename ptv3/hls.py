@@ -13,10 +13,16 @@ def mfind(t,s,e):
 	return r2
 
 def get_UA(url):
-	L=[['peers.tv','DuneHD/1.0.3'],['193.124.177.175','TV+Android/1.1.5.2 (Linux;Android 7.1.1) ExoPlayerLib/2.9.1']]
+	L=[['peers.tv_off','DuneHD/1.0.3'],['193.124.177.175','TV+Android/1.1.5.2 (Linux;Android 7.1.1) ExoPlayerLib/2.9.1']]
 	for i in L:
 		if i[0] in url: return i[1]
 	return 'Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60'
+
+def get_RF(url):
+	L=[['peers.tv','https://peers.tv'],]
+	for i in L:
+		if i[0] in url: return i[1]
+	return ''
 
 def CRC32(buf):
 		import binascii
@@ -66,9 +72,10 @@ class HLS():
 		self.buf = None
 		self.br_n = 0
 
-	def GET(self, url, Referer = 'http://ya.ru/'):
+	def GET(self, url, Referer = ''):
 		#cache=get_cache(url)
 		#if cache!=None: return cache
+		if Referer == '': Referer = get_RF(url)
 		try:
 			urllib2.install_opener(urllib2.build_opener()) 
 			req = urllib2.Request(url)
@@ -78,6 +85,7 @@ class HLS():
 			#|User-Agent=Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:35.0) Gecko/20100101 Firefox/35.0
 			req.add_header('Accept', 'text/html, application/xml, application/xhtml+xml, */*')
 			req.add_header('Accept-Language', 'ru,en;q=0.9')
+			if Referer != '': req.add_header('Referer', Referer)
 			response = urllib2.urlopen(req, timeout=5)
 			data=response.read()
 			response.close()
@@ -156,7 +164,7 @@ class HLS():
 			self.hls_n = 0
 		
 		if self.hls_list == []: 
-			print self.hls_url
+			#print self.hls_url
 			list = self.get_list(self.hls_url)
 			if list == []: return None#'error '+str(self.list_index)
 			else: self.hls_list = list
@@ -168,7 +176,7 @@ class HLS():
 		else:
 			head = self.hls_head
 		
-		print head
+		#print head
 		#print L
 		if L[self.hls_n][:4]!='http': data_url = head+L[self.hls_n]
 		else:						  data_url = L[self.hls_n]
@@ -176,9 +184,13 @@ class HLS():
 		data_url = normal(data_url)
 		
 		print data_url#[-20:]
+		if '/block/' in data_url:
+			print 'BLOCK'
+			return None
+			
 		if data_url not in self.hls_complit:
 			
-			data = self.GET(data_url, head)
+			data = self.GET(data_url)#, head
 			if data != None:
 				self.hls_n+=1
 				self.hls_complit.append(data_url)
@@ -209,11 +221,11 @@ class HLS():
 
 	def get_data_buf(self):
 		block_sz = 8192
-		buf_sz   = 1024000
-		try: 
-			szb = len(self.buf)
-			if szb < buf_sz+block_sz: print szb
-		except: print 0
+		buf_sz   = 10240#00
+		#try: 
+		#	szb = len(self.buf)
+		#	if szb < buf_sz+block_sz: print szb
+		#except: print 0
 		if self.buf == None:
 			self.buf = self.get_data2()
 			if self.buf == None: return None
