@@ -126,7 +126,7 @@ def START(PID):
 		if purl=='': 
 			STOP()
 			return ''
-		PUSH('PLAYBACK '+purl+' stream=1')
+		PUSH('PLAYBACK '+purl)#+' stream=1'
 		return purl
 	else:
 		print 'NO KEY'

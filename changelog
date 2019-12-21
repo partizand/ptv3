@@ -1,3 +1,13 @@
+3.13.5 https://cloud.mail.ru/public/42WG/9SjnXx85H (и в репозитории)
+- добавил tv-kanali.online 
+
+0.13.4 - https://cloud.mail.ru/public/2SxG/48v8gy4Ek
+- оптимизация списка каналов.
+(время зависит от количества активных каналов но гораздо быстрее)
+
+0.13.3 https://cloud.mail.ru/public/5QAA/KSm22A26L
+- Исправлен доступ к peers.tv
+
 0.13.2 - https://cloud.mail.ru/public/KWYf/B3A9JzFzp
 - tvtvtv.ru
 - поиск логотипов по источникам каналов 
