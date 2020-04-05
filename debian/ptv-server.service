@@ -9,7 +9,7 @@ StateDirectory=ptv-server
 Type=simple
 Restart=always
 WorkingDirectory=/var/lib/ptv-server/
-ExecStart=/usr/bin/python2 server.py
+ExecStart=start-ptv-server
 
 [Install]
 WantedBy=multi-user.target

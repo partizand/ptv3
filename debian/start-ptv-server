@@ -1,0 +1,22 @@
+#!/usr/bin/bash
+
+# Backup ptv-server settings and start server
+
+
+# Current date time in $date
+DayOfWeek=$(date +%u)
+
+serverdir="/var/lib/ptv-server"
+
+backupdir="$serverdir/backup"
+
+#mkdir -p $backupdir
+
+arhname="$backupdir/ptv-server-settings-$DayOfWeek.tar.xz"
+
+tar --exclude=user/EPGdb.py --directory=$serverdir settings user --create --file=$arhname --lzma
+
+# Start server
+/usr/bin/python2 server.py
+
+

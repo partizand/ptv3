@@ -1,3 +1,4 @@
 var/lib/ptv-server/cache
 var/lib/ptv-server/settings
 var/lib/ptv-server/user 
+var/lib/ptv-server/backup

@@ -7,3 +7,4 @@ ptv3/serv/*.py var/lib/ptv-server/serv
 ptv3/serv/*.cl var/lib/ptv-server/serv 
 ptv3/logo/* var/lib/ptv-server/logo
 ptv3/webui.files/* var/lib/ptv-server/webui.files
+debian/start-ptv-server var/lib/ptv-server/start-ptv-server
