@@ -17,6 +17,9 @@
 %:
 	dh $@
 
+override_dh_auto_build:
+	pandoc debian/ptv-server.md -s -t man > debian/ptv-server.1
+	dh_auto_build
 
 # dh_make generated override targets
 # This is example for Cmake (See https://bugs.debian.org/641051 )
