@@ -63,17 +63,18 @@ class PZL:
 			return []
 	
 	def Canals(self):
-		hp=getURL(httpSiteUrl)
+		hp=getURL(httpSiteUrl+'/ajax/get-channels-menu')
 		hp=hp[hp.find('<ul class="inner channels-data">'):]
 		L=mfindal(hp,'<li class="channels-item','</li>')
 		LL=[]
 		for i in L:
-			try:
-				url   = 'limehd:'+mfind(i,'data-playlist="','"')
-				img   = mfind(i,'channel-icon" src="','"')
-				title = mfind(i,'channel-text">','<')
-				LL.append({'url':url, 'img':img, 'title':title, 'group':''})
-			except: pass
+			if 'm3u' in i:
+				try:
+					url   = 'limehd:'+mfind(i,'data-playlist="','"')
+					img   = mfind(i,'channel-icon" src="','"')
+					title = mfind(i,'channel-text">','<')
+					LL.append({'url':url, 'img':img, 'title':title, 'group':''})
+				except: pass
 		return LL
 
 #p=PZL()

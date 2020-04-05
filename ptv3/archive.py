@@ -432,7 +432,7 @@ def archive_by_cid(CID, day=0):
 						for i in L:
 							st=i['time']
 							#rec_id = get_ID(st+i['title'])+'|'+aid+'|'+str(day)
-							rec_id = st.replace(':','-')+'|'+CID+'|'+str(day)
+							rec_id = st.replace(':','-')+'_'+CID+'_'+str(day)
 							try: 
 								i2=da[st]
 								urls=i2['url']
@@ -480,7 +480,7 @@ def archive_by_id(aid, day=0):
 								CID = get_ID(j['title'])
 								break
 						
-						rec_id = st.replace(':','-')+'|'+CID+'|'+str(day)
+						rec_id = st.replace(':','-')+'_'+CID+'_'+str(day)
 						url= i['url']
 						try: 
 							i2=da[st]
@@ -500,8 +500,10 @@ def get_archive(url):
 	for i in Lserv:
 		ids=i[4:]#.replace('_','-')
 		if ids in url:
-			exec ("import "+i+"; serv="+i+".ARH()")
-			return serv.Streams(url)
+			try:
+				exec ("import "+i+"; serv="+i+".ARH()")
+				return serv.Streams(url)
+			except: pass
 	return []
 
 def stream(url):
@@ -513,7 +515,7 @@ def stream(url):
 
 def stream_by_id(uid):
 	ip = settings.get('ip')
-	Lid = uid.split('|')
+	Lid = uid.split('_')
 	rid=Lid[0].replace('-',':')
 	CID=Lid[1]
 	day=Lid[2]
@@ -542,7 +544,7 @@ def streams(urls):
 
 def streams_by_id_old(uid):
 	ip = settings.get('ip')
-	Lid = uid.split('|')
+	Lid = uid.split('_')
 	#print Lid
 	rid=Lid[0]
 	aid=Lid[1]
@@ -551,7 +553,7 @@ def streams_by_id_old(uid):
 	Lpurl = []
 	for k in D.keys():
 		itm=D[k]
-		if itm['id'].split('|')[0]==rid:
+		if itm['id'].split('_')[0]==rid:
 			Lrec=itm['url']
 			for url in Lrec:
 				try:   Lcurl=get_archive(url)
@@ -566,7 +568,7 @@ def streams_by_id_old(uid):
 
 def streams_by_id(uid):
 	ip = settings.get('ip')
-	Lid = uid.split('|')
+	Lid = uid.split('_')
 	rid=Lid[0].replace('-',':')
 	CID=Lid[1]
 	day=Lid[2]

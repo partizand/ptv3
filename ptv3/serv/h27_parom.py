@@ -27,7 +27,7 @@ def getURL(url, Referer = httpSiteUrl):
 class PZL:
 
 	def Streams(self, url):
-		CID = url.replace('parom','')
+		CID = url.replace('parom:','')
 		h=getURL('http://www.parom.tv/ru/playerdata.json').replace('\\/','/')
 		true = True
 		false = False
@@ -35,7 +35,6 @@ class PZL:
 		L=eval(h)['channels']
 		LL=[]
 		for i in L:
-				#print i
 				try:
 					if CID == str(i['id']): 
 						stream = i['hls_uri']
@@ -44,7 +43,7 @@ class PZL:
 		return []
 
 	def Canals(self):
-		print 'ucom'
+		print 'parom'
 		h=getURL('http://www.parom.tv/ru/playerdata.json').replace('\\/','/')
 		true = True
 		false = False

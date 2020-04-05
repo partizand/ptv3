@@ -4,7 +4,6 @@
 {'url': 'http://domatv.net/199-shokirujuschee-hd.html', 'img': 'http://domatv.net/uploads/posts/2019-02/1550061609_shokirujuschee_hd.png', 'title': '\xd0\xa8\xd0\xbe\xd0\xba\xd0\xb8\xd1\x80\xd1\x83\xd1\x8e\xd1\x89\xd0\xb5\xd0\xb5 HD'},
 {'url': 'http://domatv.net/92-shanson-tv.html', 'img': 'http://domatv.net/uploads/posts/2018-11/1543233670_shansontv.png', 'title': '\xd0\xa8\xd0\xb0\xd0\xbd\xd1\x81\xd0\xbe\xd0\xbd \xd0\xa2\xd0\x92'},
 {'url': 'http://domatv.net/59-che-tv.html', 'img': 'http://domatv.net/uploads/posts/2018-11/1542821153_shetv.png', 'title': '\xd1\x87\xd0\xb5 \xd1\x82\xd0\xb2'},
-{'url': 'http://domatv.net/183-trk-ukraina.html', 'img': 'http://domatv.net/uploads/posts/2019-01/1548307954_trk-ukraina.png', 'title': '\xd0\xa2\xd0\xa0\xd0\x9a \xd0\xa3\xd0\xba\xd1\x80\xd0\xb0\xd0\xb8\xd0\xbd\xd0\xb0'},
 {'url': 'http://domatv.net/220-tochka-otryva.html', 'img': 'http://domatv.net/uploads/posts/2019-03/1553074709_tochka-otryva.png', 'title': '\xd0\xa2\xd0\xbe\xd1\x87\xd0\xba\xd0\xb0 \xd0\x9e\xd1\x82\xd1\x80\xd1\x8b\xd0\xb2\xd0\xb0'},
 {'url': 'http://domatv.net/9-tnt-4.html', 'img': 'http://domatv.net/uploads/posts/2018-11/1542889112_tnt4.png', 'title': '\xd0\xa2\xd0\x9d\xd0\xa24'},
 {'url': 'http://domatv.net/180-tnt-music.html', 'img': 'http://domatv.net/uploads/posts/2019-01/1548307466_tnt__music.png', 'title': '\xd0\xa2\xd0\x9d\xd0\xa2 MUSIC'},
@@ -107,7 +106,6 @@
 {'url': 'http://domatv.net/156-belarus-2.html', 'img': 'http://domatv.net/uploads/posts/2019-01/1547788275_belarus-2.png', 'title': '\xd0\x91\xd0\xb5\xd0\xbb\xd0\xb0\xd1\x80\xd1\x83\xd1\x81\xd1\x8c 2'},
 {'url': 'http://domatv.net/155-belarus-1.html', 'img': 'http://domatv.net/uploads/posts/2019-01/1547788106_belarus-1.png', 'title': '\xd0\x91\xd0\xb5\xd0\xbb\xd0\xb0\xd1\x80\xd1\x83\xd1\x81\xd1\x8c 1'},
 {'url': 'http://domatv.net/115-avto-pljus.html', 'img': 'http://domatv.net/uploads/posts/2019-01/1547036399_avto-plyus.png', 'title': '\xd0\x90\xd0\xb2\xd1\x82\xd0\xbe \xd0\x9f\xd0\xbb\xd1\x8e\xd1\x81'},
-{'url': 'http://domatv.net/58-zee-tv.html', 'img': 'http://domatv.net/uploads/posts/2018-11/1542820708_zeetv.png', 'title': 'zee tv'},
 {'url': 'http://domatv.net/231-xsport.html', 'img': 'http://domatv.net/uploads/posts/2019-05/1558201547_xsport.png', 'title': 'Xsport'},
 {'url': 'http://domatv.net/194-vip-premiere.html', 'img': 'http://domatv.net/uploads/posts/2019-02/1549005198_premiere.png', 'title': 'VIP Premiere'},
 {'url': 'http://domatv.net/118-vip-megahit.html', 'img': 'http://domatv.net/uploads/posts/2019-01/1547037114_vip-megahit.png', 'title': 'VIP Megahit'},
@@ -164,4 +162,4 @@
 {'url': 'http://domatv.net/230-22.html', 'img': 'http://domatv.net/uploads/posts/2019-05/1558121354_2_2.png', 'title': '2+2'},
 {'url': 'http://domatv.net/140-1hd.html', 'img': 'http://domatv.net/uploads/posts/2019-01/1547300343_1hd.png', 'title': '1HD'},
 ]
-udata=1570194911.81
+udata=1579678336.48
