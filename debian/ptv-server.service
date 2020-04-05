@@ -9,7 +9,7 @@ StateDirectory=ptv-server
 Type=simple
 Restart=always
 WorkingDirectory=/var/lib/ptv-server/
-ExecStart=start-ptv-server
+ExecStart=/var/lib/ptv-server/start-ptv-server
 
 [Install]
 WantedBy=multi-user.target
