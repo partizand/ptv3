@@ -23,24 +23,25 @@ PACKAGENAME="ptv-server"
 
 case "$1" in
     purge)
-    
-    # remove all dir
-    rm -rf /var/lib/private/${PACKAGENAME}
-    ;;
-    remove)
-    
-    #inst_path=readlink -f /var/lib/ptv3
-    # remove python cache
-    find /var/lib/private/${PACKAGENAME} -name '*.pyc' -delete
-    #find ${inst_path}/user -name '*.pyc' -delete
-    # remove ptv3 cache
-    rm -rf /var/lib/private/${PACKAGENAME}/cache
-    # remove ptv3 logo
-    rm -rf /var/lib/private/${PACKAGENAME}/logo
-    # remove ptv3 arh
-    rm -rf /var/lib/private/${PACKAGENAME}/arh
-    # remove ptv3 serv
-    rm -rf /var/lib/private/${PACKAGENAME}/serv
+    if [ -d "/var/lib/private/${PACKAGENAME}" ]; then
+        # remove all dir
+        rm -rf /var/lib/private/${PACKAGENAME}
+        ;;
+        remove)
+        
+        #inst_path=readlink -f /var/lib/ptv3
+        # remove python cache
+        find /var/lib/private/${PACKAGENAME} -name '*.pyc' -delete
+        #find ${inst_path}/user -name '*.pyc' -delete
+        # remove ptv3 cache
+        rm -rf /var/lib/private/${PACKAGENAME}/cache
+        # remove ptv3 logo
+        rm -rf /var/lib/private/${PACKAGENAME}/logo
+        # remove ptv3 arh
+        rm -rf /var/lib/private/${PACKAGENAME}/arh
+        # remove ptv3 serv
+        rm -rf /var/lib/private/${PACKAGENAME}/serv
+    fi
     ;;
 	upgrade|failed-upgrade|abort-install|abort-upgrade|disappear)
 	;;
