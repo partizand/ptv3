@@ -26,9 +26,10 @@ case "$1" in
     if [ -d "/var/lib/private/${PACKAGENAME}" ]; then
         # remove all dir
         rm -rf /var/lib/private/${PACKAGENAME}
-        ;;
-        remove)
-        
+    fi        
+    ;;
+    remove)
+    if [ -d "/var/lib/private/${PACKAGENAME}" ]; then
         #inst_path=readlink -f /var/lib/ptv3
         # remove python cache
         find /var/lib/private/${PACKAGENAME} -name '*.pyc' -delete
