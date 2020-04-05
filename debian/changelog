@@ -1,3 +1,9 @@
+ptv-server (3.0.14.7-2) stable; urgency=medium
+
+  * new upstream 3.0.14.7
+
+ -- Partizand <partizand@gmail.com>  Sun, 05 Apr 2020 17:14:28 +0400
+
 ptv-server (3.0.13.5-1) stable; urgency=medium
 
   * new upstream 3.0.13.5
