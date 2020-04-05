@@ -82,6 +82,7 @@ class ARH:
 		L=mfindal(hp,'<li class="channel-programm-item"', '<span class="text"')
 		LL=[]
 		for i in L:
+			#print i
 			try:    s_time  = float(mfind(i,'data-begin="','"'))+10800
 			except: s_time  = 0
 			c_day = time.gmtime(s_time)[2]
@@ -90,22 +91,25 @@ class ARH:
 				title   = mfind(i,'data-name="','"')[6:]
 				uri     = mfind(i,'data-url="','"')
 				if uri!='': LL.append({'url':uri, 'title':title, 'time':tm, 's_time':s_time})
+		#print '---'
 		return LL
 
 
 	def name2id(self):
-		hp=GET(httpSiteUrl)
+		hp=GET(httpSiteUrl+'/ajax/get-channels-menu')
 		hp=hp[hp.find('<ul class="inner channels-data">'):]
 		L=mfindal(hp,'<li class="channels-item','</li>')
 		LL=[]
 		for i in L:
-			try:
-				id    = mfind(i,'href="/','"')
-				title = mfind(i,'channel-text">','<')
-				LL.append({'title':title, 'id':id})
-				#print title
-			except:
-				print i
+			if 'm3u' in i:
+				try:
+					id    = mfind(i,'href="/','"')
+					if 'data-url="https://hlsarchive' in GET(httpSiteUrl+"/"+id):
+						title = mfind(i,'channel-text">','<')
+						LL.append({'title':title, 'id':id})
+					print id
+				except:
+					print i
 		
 		return LL
 

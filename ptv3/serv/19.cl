@@ -1,4 +1,5 @@
 [
+{'url': 'peers:pobeda', 'group': '', 'img': 'http://peers.tv/data/illustrations/ills/2019/04/30/159835/159835832.png', 'title': '\xd0\x9f\xd0\xbe\xd0\xb1\xd0\xb5\xd0\xb4\xd0\xb0'},
 {'url': 'peers:hazar_tv', 'group': '', 'img': 'http://peers.tv/data/illustrations/ills/2019/08/09/167583/167583477.png', 'title': 'xezer'},
 {'url': 'peers:ctimai_tv', 'group': '', 'img': 'http://peers.tv/data/illustrations/ills/2019/08/09/167583/167583523.png', 'title': 'Ictimai TV'},
 {'url': 'peers:arb_tv', 'group': '', 'img': 'http://peers.tv/data/illustrations/ills/2019/08/09/167583/167583497.png', 'title': 'ARB TV'},

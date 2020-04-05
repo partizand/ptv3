@@ -10,6 +10,7 @@ try:
 	set=xbmcaddon.Addon(id='ptv3')
 	set.setSetting("ptv",'3')
 	UserDir = os.path.join(xbmc.translatePath("special://masterprofile/"),"addon_data","ptv3")
+	#picon_dir = os.path.join(xbmc.translatePath("special://masterprofile/"),"addon_data","ptv3")
 except:
 	serv_dir = os.path.join(os.getcwd(), "serv" )
 	picon_dir = os.path.join(os.getcwd(),'logo')
@@ -185,11 +186,12 @@ def inBL(url):
 
 import urllib2
 def test_url(url):
+	print 'test'
 	if 'udp://' in url:  return '200'
 	if 'rtmp://' in url: return '200'
 	if '/restream/' in url: return '200'
 	
-	if url in BanCashe: return 404
+	if url in BanCashe: return '404'
 	
 	bld = [
 	'/404/index.m3u8',
@@ -209,13 +211,21 @@ def test_url(url):
 		if '/ace/' not in url: 
 			r=response.getcode()
 			#print r
-			if r=='404': 
+			if str(r)=='404': 
 				BanCashe.append(url)
-				#set_rating(url, 'bad')
 				print 'BAD'
 			else:
-				#set_rating(url, 'good')
-				print 'GOOD'
+				try:
+					data=response.read(128)
+					if '404' in repr(data): r='404'
+					if 'html' in repr(data): r='404'
+				except: r='404'
+				
+				if r=='404':
+					BanCashe.append(url)
+					print 'BAD'
+				else:
+					print 'GOOD'
 			return r
 		else:
 			r = response.read()
@@ -249,8 +259,38 @@ def test_url(url):
 
 		#return response.getcode()
 	except:
+		BanCashe.append(url)
+		print 'BAD'
 		return '404'
 
+def get_UA(url):
+	L=[['peers.tv_off','DuneHD/1.0.3'],['193.124.177.175','TV+Android/1.1.5.2 (Linux;Android 7.1.1) ExoPlayerLib/2.9.1']]
+	for i in L:
+		if i[0] in url: return i[1]
+	return 'Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60'
+
+def get_RF(url):
+	L=[['peers.tv','https://peers.tv'],]
+	for i in L:
+		if i[0] in url: return i[1]
+	return ''
+
+
+def GET_off(url):
+	print 'GET> ' +url
+	Referer = get_RF(url)
+	print Referer
+	UA = get_UA(url)
+	print UA
+	import urllib2
+	opener = urllib2.build_opener()
+	urllib2.install_opener(opener)
+	req = urllib2.Request(url)
+	req.add_header('User-Agent', UA)
+	if Referer != '': req.add_header('Referer', Referer)
+	try: response = urllib2.urlopen(req)#, timeout=15)#url
+	except: response = ''
+	return response
 
 def GET(url):
 	import urllib2
@@ -392,6 +432,7 @@ def aggregate_cnl(L):
 	for i in L:
 		name=i['title']
 		img=i['img']
+		
 		if 'group' in i.keys():group = i['group']
 		else: group = ''
 		
@@ -733,7 +774,7 @@ def get_all_serv(id):
 
 
 
-def get_serv_dict():
+def get_serv_dict(lock=False):
 	filtr=[]
 	if settings.get("split_1") == 'false':filtr.append('h')
 	if settings.get("split_2") == 'false':filtr.append('u')
@@ -746,7 +787,9 @@ def get_serv_dict():
 			if i[:1] in filtr:	serv_nm='<font color="red">'+i[4:]+'</font>'
 			elif settings.get("serv"+serv_id)== 'false': serv_nm='<font color="red">'+i[4:]+'</font>'
 			else:				serv_nm=i[4:]
-			try: Ls=get_cahe_list(serv_id)
+			try: 
+				if lock: Ls=get_saved_list(serv_id)
+				else:    Ls=get_cahe_list(serv_id)
 			except:Ls=[]
 			D[serv_nm]=Ls
 	return D
@@ -772,6 +815,17 @@ def get_cahe_list(s):
 		for i in L2:
 			if inBL(i['url']) == False: L.append(i)
 		add_cahe_lists(s, tm, L)
+		return L
+
+def get_saved_list(s):
+		fp=os.path.join(serv_dir, s+'.cl')
+		fl = open(fp, "r")
+		t=fl.read()
+		fl.close()
+		L2=eval(t[t.find('['):t.rfind(']')+1])
+		L=[]
+		for i in L2:
+			L.append(i)
 		return L
 
 def get_cahe_time(s):
@@ -945,7 +999,7 @@ def get_stream(url):
 								import base64
 								ip = settings.get('ip')
 								curl= 'http://'+ip+':'+str(port)+'/restream/'+base64.b64encode(curl)
-							
+								#curl= 'http://'+ip+':'+str(port)+'/agent/'+base64.b64encode(curl)
 							if 'acestream://' in curl:
 								CID=curl[12:]
 								prx = settings.get("p2p_proxy")
@@ -1142,7 +1196,7 @@ def add_to_base(CID):
 						DBC[id]={'group': [group,], 'names': [uni_mark(c['title'])], 'title': c['title']}
 						try: save_DBC(DBC)
 						except: pass
-						set_group_cnl(id, group, False)
+						if group !='': set_group_cnl(id, group, False)
 						return True
 	return False
 
@@ -1287,12 +1341,20 @@ def streams(id):
 		for r in Lt:
 			if r[1] not in LL: LL.append(r[1])
 	
+	elif len(urls)==1:
+		url = urls[0]
+		L2=get_stream(url)
+		for st in L2:
+			t=test_url(st)
+			#print t
+			if t!='404' and st not in LL: LL.append(st)
+	
 	else:
 		for url in urls:
 			try: L2=get_stream(url)
 			except:L2=[]
 			LL.extend(L2)
-			
+	#print LL
 	return LL
 
 

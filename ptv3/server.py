@@ -6,7 +6,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 import threading, SocketServer, BaseHTTPServer
 quit_event = threading.Event()
 
-print('----- Starting PTV3 0.13.5 -----')
+print('----- Starting PTV3 0.14.7 -----')
 
 import sys, os, json
 import time
@@ -86,6 +86,7 @@ print('OPTION:   http://'+ip+':'+str(port))
 print('PLAYLIST: http://'+ip+':'+str(port)+'/playlist')
 trigger = True
 
+core.GET('http://'+ip+':'+str(port)+'/serv/stop')#закрытие предыдущей версии
 
 # =========================== Базовые функции ================================
 def fs_enc(path):
@@ -189,6 +190,7 @@ tr_list=[
 	'tr_upd36',
 	'tr_upd37',
 	'tr_upd38',
+	'tr_upd39',
 	'tr_upd52',
 	'tr_upd53',
 	'tr_upd81',
@@ -238,6 +240,7 @@ upt_list=[
 	'id_upt36',
 	'id_upt37',
 	'id_upt38',
+	'id_upt39',
 	'id_upt52',
 	'id_upt53',
 	'id_upt11',
@@ -587,7 +590,7 @@ def info(id):
 		img = "<img border=0 width=120 height=120 src='"+picon+"'>"
 		data=data.replace('[IMG]', img)
 		LL=[]
-		D=core.get_serv_dict()
+		D=core.get_serv_dict(True)
 		for s in D.keys():
 			L=D[s]
 			for i in L:
@@ -1004,12 +1007,27 @@ class HttpProcessor(BaseHTTPRequestHandler):
 		if data == '404 Not Found':
 			self.send_response(404)
 		else:
-			if head =='http' or head[0] =='/':
+			if head =='http' or head[0] =='/' :
 				#print '302'
 				self.send_response(302)
 				self.send_header('Location', data)
 				self.send_header('content-type','image/jpeg')
-			
+			elif head =='RUA12121:':
+				print '=== Replace UA ==='
+				id=data[4:]
+				try:    stream = base64.b64decode(id)
+				except: stream = ''
+				print stream
+				self.send_response(200)
+				data=core.GET(stream)
+				if 'http' in data: 
+					print '-PLAYLIST-'
+					data = data.replace('http','http://'+ip+':'+str(port)+'/agent/http')
+					print data
+				else: 
+					print 'DATA: '+str(len(data))
+					self.send_header('content-type','video/mp4')
+				
 			elif head =='udp:' or head =='rtmp':
 				#print 'UDP/RTMP'
 				self.send_response(200)
@@ -1042,6 +1060,21 @@ class HttpProcessor(BaseHTTPRequestHandler):
 			
 			
 		self.end_headers()
+		
+		
+		if head =='RUA:':
+				print '=== Replace UA ==='
+				id=data[4:]
+				try:    stream = base64.b64decode(id)
+				except: stream = ''
+				print stream
+				data=core.GET(stream)
+				if 'http' in data: 
+					print '-PLAYLIST-'
+					data = data.replace('http','http://'+ip+':'+str(port)+'/agent/http')
+					print data
+				else: 
+					print 'DATA: '+str(len(data))
 		
 		if head[:3]=='CLE':
 			print '---- CLE ----'
@@ -1731,7 +1764,7 @@ def get_on(addres):
 				elif '/ace/'   in stream:    data='BS:' +stream
 				elif '/udp/' in stream:      data='BS:' +stream
 				else:                        data='HLS:'+stream
-				print data
+				#print data
 			else:
 				data='404 Not Found'
 		elif '/restreams/' in addres:
@@ -1920,6 +1953,11 @@ def get_on(addres):
 				archive.change_id(id2, id1)
 				data='/editor#'+id2
 			if '/json' in addres: data=json.dumps(data)
+		elif '/agent/' in addres:
+			print 'AGENT'
+			id=addres[addres.find('/agent/')+7:]
+			data = 'RUA:'+id
+			
 
 		if nofollow and data!='404 Not Found': data='200 OK'
 		return data

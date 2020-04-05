@@ -38,6 +38,11 @@ def mfindal(http, ss, es):
 		http=http[e+2:]
 	return L
 
+def mfind(t,s,e):
+	r=t[t.find(s)+len(s):]
+	r2=r[:r.find(e)]
+	return r2
+
 class PZL:
 	def __init__(self):
 		pass
@@ -45,9 +50,7 @@ class PZL:
 	def Streams(self, url, aceproxy='false'):
 			try:
 				http=getURL(url[9:])
-				ss='" src="http'
-				es='php"'
-				pl='http'+mfindal(http,ss,es)[0][len(ss):]+'php'
+				pl=mfind(http,'frame" src="','"')
 				
 				http2=getURL(pl)
 				ss='file:"'

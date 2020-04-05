@@ -36,15 +36,43 @@ if port=='':
 	port = 8185
 	settings.set('port', 8185)
 
+def mfindal(http, ss, es):
+	L=[]
+	while http.find(es)>0:
+		s=http.find(ss)
+		#sn=http[s:]
+		e=http.find(es)
+		i=http[s:e]
+		L.append(i)
+		http=http[e+2:]
+	return L
+
+def mfind(t,s,e):
+	r=t[t.find(s)+len(s):]
+	if e=='': return r
+	r2=r[:r.find(e)]
+	return r2
 
 sys.path.append(UserDir)
+#EPG_db = os.path.join(UserDir, "EPGdb.py" )
 
 from UserDBcnl import *
 
+EPG = {}
 try: 
-	from EPGdb import *
+	fp=os.path.join(UserDir, 'EPGdb.py')
+	with open(fp, "r") as file:
+		for i in file:
+			if len (i)>100:
+				key = i[1:9]
+				#print key
+				#print '{'+i[:10]+' ... '+i[-10:-1]+'}'
+				itm = eval('{'+i.replace('\n','')+'}')
+				EPG[key] = itm[key]
+	#from EPGdb import *
 	if EPG == "": EPG = {}
 except:
+	print 'except EPG'
 	EPG = {}
 
 
@@ -85,16 +113,6 @@ def get_d():
 
 link_cnl = get_d()
 
-def mfindal(http, ss, es):
-	L=[]
-	while http.find(es)>0:
-		s=http.find(ss)
-		#sn=http[s:]
-		e=http.find(es)
-		i=http[s:e]
-		L.append(i)
-		http=http[e+2:]
-	return L
 
 def getURL2(url, dt=3):
 		import requests

@@ -67,6 +67,7 @@ class PZL:
 			if '<li id=' in i:
 				try:
 					url=mfind(i,'<a href="','"')
+					if 'http' not in url: url='http:'+url
 					#print url
 					img = httpSiteUrl+"/"+mfind(i,'<img src="','"')
 					title=mfind(i,'"/>', '<')

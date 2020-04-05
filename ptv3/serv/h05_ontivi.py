@@ -4,11 +4,11 @@
 import urllib2, time
 #-----------------------------------------
 
-serv_id = '7'
-siteUrl = 'oxax.tv'
+serv_id = '5'
+siteUrl = 'ontivi.net'
 httpSiteUrl = 'http://' + siteUrl
 
-def getURL(url, Referer = httpSiteUrl):
+def GET(url, Referer = httpSiteUrl):
 	req = urllib2.Request(url)
 	req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0')
 	req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
@@ -49,7 +49,7 @@ def decoder(h):
 	h = h.replace('//VFRUV//', '//')
 	h = h.replace('//RlZGV//', '//')
 	
-	h = h.replace('////', '//')
+	#h = h.replace('////', '//')
 	for i in L:
 		h = h.replace(i, '')
 	print '-'
@@ -61,17 +61,17 @@ def decoder(h):
 
 def get_stream(url):
 		try:
-			http=getURL(url[8:])
-			ss='$.get("pley",{kes:\''
-			es='\'},function(data){$('
-			pl=httpSiteUrl+'/pley?kes='+mfind(http,ss,es)
-			#print pl
-			http2=getURL(pl)
-			tmp=mfind(http2,'file:"','"')
+			http=GET(url)#[7:]
+			if "silka:" in http: return mfind(http, "{silka:'", "'")
+			pl=httpSiteUrl+'/open?kes='+mfind(http,"{kes:'","'")
+			print pl
+			http2=GET(pl)
+			tmp=mfind(http2,'file : "','"')
 			print tmp
 			st=decoder(tmp)
 			print st
-			if st.rfind('=')==49: return st
+			print st.rfind('=')
+			if st.rfind('=')==51 or st.rfind('=')==50: return st
 			else: return ''
 		except:
 			return ''
@@ -84,37 +84,35 @@ class PZL:
 	def Streams(self, url):
 			for i in range(3):
 				st=get_stream(url)
-				if st!='': return [st,]
+				if st!='': 
+					print GET(st)
+					return [st,]
 			return []
 
 	def Canals(self):
+		http=GET(httpSiteUrl+'/chanel?catidd=0')
+		
 		LL=[]
-		group='Эротика'
-		img=''
-		http=getURL(httpSiteUrl+'/spisok')
-
-		ss='<div class="tv_sp"'
-		es='<span><p style="background-position:'
+		ss='<li data-id'
+		es='class="k_kon">'
 		L=mfindal(http,ss,es)
-
+		
 		for i in L:
 			try:
-				ss='href="'
-				es='.html'
-				url='oxax-tv:'+httpSiteUrl+mfindal(i,ss,es)[0][len(ss):]+es
-
-				ss='title="'
-				es='"><a href='
-				title=mfindal(i,ss,es)[0][len(ss):]
+				url   = httpSiteUrl+mfind(i,'href="','"')
+				title = mfind(i,'name">','<')
 				try: title=title.encode('utf-8')
 				except:pass
-
-				LL.append({'url':url, 'img':img, 'title':title, 'group':group})
+				tmp = GET(url)
+				if "silka:" in tmp or "{kes:" in tmp:
+					print url
+					LL.append({'url':url, 'img':'', 'title':title})
 			except:
 				pass
-
+		#print LL
 		return LL
 
 #p=PZL()
+#p.Canals()
 #print p.Streams('00000000http://oxax.tv/fap-tv-2.html')
 #time.sleep(30)
