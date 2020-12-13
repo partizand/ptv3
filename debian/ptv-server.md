@@ -1,6 +1,6 @@
 % PTV-SERVER(1)
 % PARTIZAND
-% April 2020
+% December 2020
 
 # NAME
 
@@ -8,11 +8,13 @@ Ptv-server. russian tv
 
 # SYNOPSIS
 
-**none**
+Сервис стартует автоматически как служба systemd **ptv-server**
+
+Управление настройками через web-интерфейс сервера http://127.0.0.1:8185
 
 # DESCRIPTION
 
-Сервер собирающий потоки с разных сайтов. независимый от Коди. http://xbmc.ru/forum/showthread.php?t=16628
+Сервер собирающий потоки с разных сайтов, независимый от Коди. http://xbmc.ru/forum/showthread.php?t=16628
 
 Особенности пакета
 
@@ -27,10 +29,6 @@ Ptv-server. russian tv
 При каждом старте сервиса, настройки каналов архивируются в /var/lib/ptv-server/backup файл с номером дня недели. Файлы перетираются.
 
 /var/lib/ptv-server/backup можно архивировать/переносить в другое место во время работы сервиса.
-
-
-Web-интерфейс сервера http://127.0.0.1:8185
-
 
 # GENERAL OPTIONS
 
