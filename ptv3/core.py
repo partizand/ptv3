@@ -52,11 +52,11 @@ class MyThread(Thread):
 	
 	def run(self):
 		Lu=get_stream(self.param['url'])
-		#try:r=test_url(Lu[0])
-		#except: r='404'
-		#if r!='404': update_Lt(Lu, self.param['n'], self.param['url'])
-		#else:		 update_Lt([], self.param['n'], self.param['url'])
-		update_Lt(Lu, self.param['n'], self.param['url'])
+		try:r=test_url(Lu[0])
+		except: r='404'
+		if r!='404': update_Lt(Lu, self.param['n'], self.param['url'])
+		else:		 update_Lt([], self.param['n'], self.param['url'])
+		#update_Lt(Lu, self.param['n'], self.param['url'])
 
 
 def create_thread(param):
@@ -186,6 +186,7 @@ def inBL(url):
 
 import urllib2
 def test_url(url):
+	#return '200'
 	print 'test'
 	if 'udp://' in url:  return '200'
 	if 'rtmp://' in url: return '200'
@@ -216,9 +217,15 @@ def test_url(url):
 				print 'BAD'
 			else:
 				try:
-					data=response.read(128)
+					data=response.read(64)
 					if '404' in repr(data): r='404'
 					if 'html' in repr(data): r='404'
+					if '#EXTM3U' in repr(data):
+						data2=response.read()
+						if 'test_end.ts' in data2: 
+							BanCashe.append(url)
+							print  '404 missing'
+							return '404'
 				except: r='404'
 				
 				if r=='404':
@@ -965,6 +972,15 @@ def get_allurls(id, L):
 			if url not in BLs: L3.append(url)
 	return L3
 
+def isRestream(url):
+	sList=settings.get("restream_list")
+	try:
+		for s in sList.split(','):
+			s=s.strip()
+			if s in url: return True
+	except: pass
+	return False
+
 def get_stream(url):
 	filtr=[]
 	if settings.get("split_1") == 'false':filtr.append('h')
@@ -995,7 +1011,9 @@ def get_stream(url):
 					Lpurl = []
 					try:
 						for curl in Lcurl: 
-							if 'zabava' in curl or 'vrzh-htlive' in curl or 'yandex' in curl or 'ucom.am' in curl or '/udp/' in curl or 'peers.tv' in curl or '193.124.177.175' in curl:
+							#if 'zabava' in curl or 'vrzh-htlive' in curl or 'yandex' in curl or 'ucom.am' in curl or '/udp/' in curl or 'peers.tv' in curl or '193.124.177.175' in curl:
+							if isRestream(curl):# and settings.get("restreamer") != 'false'
+								print 'isRestream '+curl
 								import base64
 								ip = settings.get('ip')
 								curl= 'http://'+ip+':'+str(port)+'/restream/'+base64.b64encode(curl)

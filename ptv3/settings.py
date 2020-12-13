@@ -38,6 +38,8 @@ def default(key):
 		elif 'p2p_serv' in key: return '127.0.0.1'
 		elif 'scan_limit' in key: return '20'
 		elif 'serv' in key:     return 'false'
+		elif 'restream_list' in key:   return 'zabava, vrzh-htlive, yandex, ucom.am, peers.tv, /udp/'
+		elif key == 'restreamer': return 'true'
 		if 'upd3' in key and key!='upd3' : return 'true'
 		if 'upd8' == key :      return ''
 		elif 'upd8' in key :      return 'true'

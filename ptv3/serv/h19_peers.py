@@ -100,7 +100,7 @@ class PZL:
 		return []#stream1+'|User-Agent=DuneHD/1.0.3',stream2+'|User-Agent=DuneHD/1.0.3',]
 
 	def Canals(self):
-		print 'ucom'
+		print '-= peers.tv =-'
 		#https://api.peers.tv/registry/2/whereami.json #интересные данные
 		m3u=getURL('https://api.peers.tv/iptv/2/playlist.m3u')
 		h=getURL('http://api.peers.tv/tvguide/2/channels.json').replace('\\/','/')

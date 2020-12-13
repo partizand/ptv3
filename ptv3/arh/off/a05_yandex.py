@@ -88,6 +88,8 @@ class ARH:
 		pass
 
 	def Streams(self, url):
+		print url
+		return [url]
 		#print url
 		hp=GET(url)#+'&start=1552610400&end=1552616100'
 		#print hp
@@ -108,7 +110,7 @@ class ARH:
 	#Streams ("https://strm.yandex.ru/kal/zvezda_supres/zvezda_supres0.m3u8?end=1552616100&from=efir&   imp_id=36&partner_id=278914&start=1552610400&target_ref=https%3A//yastatic.net&uuid=47db04cf4378f160896388887b60a1e1&video_category_id=1011")
 	#Streams ("https://strm.yandex.ru/kal/zvezda_supres/zvezda_supres0.m3u8?from=unknown&imp_id=40&partner_id=278914")
 
-	def Archive(self, id, t):
+	def Archive_off(self, id, t):
 		#print t
 		dt=t[3]*60*60+t[4]*60
 		
@@ -122,7 +124,7 @@ class ARH:
 		#print et
 		#end_date__from=1552615200&start_date__to=1552701300
 		url='https://frontend.vh.yandex.ru/v22/episodes.json?end_date__from='+et+'&start_date__to='+st+'&parent_id='+id
-		#print url
+		print url
 		hp=GET(url)
 		true=True
 		false=False
@@ -142,6 +144,38 @@ class ARH:
 		
 	#get_streams('4d1d6979385d28ebab8faae66cd97d72')
 
+	def Archive(self, id, t):
+		print t
+		dt=t[3]*60*60+t[4]*60
+		
+		if t[2] != time.localtime(time.time())[2]:
+			st=str(int(time.mktime(t))+86400+3600-dt)
+		else:
+			st=str(int(time.mktime(t)))
+		
+		et=str(int(time.mktime(t))-86400-14400+dt)
+		#end_date__from=1552615200&start_date__to=1552701300
+		post='{episodes(service:"ya-main",from:"efir",from_block:"tv_wizard",locale:"ru",parent_id:"'+'",end_date__from:'+et+',start_date__to:'+st+')}'
+		post='{episodes(service:"ya-main",from:"efir",from_block:"tv_wizard",locale:"ru",parent_id:"463fd8eea943347e804a4466ac4f1fc4",end_date__from:1602468000,start_date__to:1602554400)}'
+		print post
+		hp=POST('https://frontend.vh.yandex.ru/graphql', post)
+		true=True
+		false=False
+		print hp
+		json=eval(hp)
+		LL=[]
+		for i in json['episodes']['content']['set']:
+			print i
+			try:s_time  = i['start_time']
+			except: s_time  = 0
+			tm      = time.strftime('%H:%M', time.gmtime(s_time))
+			try:program = i['program_title']
+			except: program = ''
+			title   = i['title']
+			if title!=program: title=program+' '+ title
+			uri     = i['streams'][0]['url']
+			LL.append({'url':uri, 'title':title, 'time':tm, 's_time':s_time})
+		return LL
 
 	def name2id(self):
 		url = 'https://www.yandex.ru/portal/tvstream_json/channels?locale=ru&from=efir'

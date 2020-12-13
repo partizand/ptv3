@@ -16,6 +16,12 @@ hr  = urllib2.HTTPCookieProcessor(cj)
 opener = urllib2.build_opener(hr) 
 urllib2.install_opener(opener) 
 
+import ssl
+
+ctx = ssl.create_default_context()
+ctx.check_hostname = False
+ctx.verify_mode = ssl.CERT_NONE
+
 def ru(x):return unicode(x,'utf8', 'ignore')
 def xt(x):return xbmc.translatePath(x)
 def fs_enc(path):
@@ -35,11 +41,17 @@ def getURL(url, Referer = httpSiteUrl):
 	req.add_header('Accept', 'text/html, application/xml, application/xhtml+xml, */*')
 	req.add_header('Accept-Language', 'ru,en;q=0.9')
 	req.add_header('Referer', Referer)
-	response = urllib2.urlopen(req)
+	response = urllib2.urlopen(req, context=ctx)
 	link=response.read()
 	response.close()
 	return link
 
+def getURL2(url, Referer = httpSiteUrl):
+	import requests
+	response = requests.get(url, verify=False)
+	link=response.text
+	return link
+	
 def mfindal(http, ss, es):
 	L=[]
 	while http.find(es)>0:

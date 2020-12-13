@@ -5,9 +5,9 @@ import os, cookielib, urllib, urllib2, time
 import settings
 #-----------------------------------------
 
-serv_id = '11'
-siteUrl = 'only-tv.net'
-httpSiteUrl = 'http://' + siteUrl
+serv_id = '12'
+siteUrl = 'onlinetv.one'
+httpSiteUrl = 'https://' + siteUrl
 
 def ru(x):return unicode(x,'utf8', 'ignore')
 
@@ -69,44 +69,32 @@ class PZL:
 		pass
 
 	def Streams(self, url):
-		#print url
-		php = 'http://cdnpotok.com/onlytv/'+mfind(url,'.org/','.htm')+'.php'
-		#print php
+		print url
+		php = httpSiteUrl+'/html/player.php?stream='+mfind(url,'.one/','-online.')
+		print php
 		http2=getURL(php, noproxy=True)
 		#print http2
 		L1=http2.splitlines()
 		for i in L1:
-				if 'file:"' in i:
-					link = i[i.find('file:"')+6:i.find('"});')]
+				if 'https://stream' in i:
+					link = i[i.find('https://stream'):i.find('", poster')]
 					return [link,]
 		return []
 
 	def Canals(self):
 		LL=[]
-		url='http://td-soft.narod.ru/list/only.tv'
-		http=getURL(url)
-		#http = GET()
-		#print http
-		http=http[http.find('<td style="text-align: center;'):]
-		ss='<td style="text-align: center;'
-		es='</div>'
+		#url='http://td-soft.narod.ru/list/only.tv'
+		http=getURL(httpSiteUrl)
+		http=http[http.find('<ul class="pult">'):]
+		ss='<li><a class="'
+		es='</div></a></li>'
 		L=mfindal(http,ss,es)
 		Lu=[]
 		for i in L:
 			try:
-				if 'title=' in i:
-					ss='<a href="'
-					es='.html'
-					url='http://only-tv.org'+mfindal(i,ss,es)[0][len(ss):]+es
-					
-					ss='src="'
-					es='" alt="'
-					img='http://only-tv.net'+mfindal(i,ss,es)[0][len(ss):]
-					
-					ss='title="'
-					es='" width='
-					title=mfindal(i,ss,es)[0][len(ss):][:-30]
-					title=title.replace('Еда ТВ','ЕДА HD')
+					url=httpSiteUrl+mfind(i,'href="','"')
+					img=httpSiteUrl+mfind(i,'src="','"')
+					title=mfind(i,'<h3>','<')
 					if url not in Lu:
 						Lu.append(url)
 						LL.append({'url':url, 'img':img, 'title':title})

@@ -1,5 +1,5 @@
 [
-{'url': 'http://domatv.net/206-jumor-boks.html', 'img': 'http://domatv.net/uploads/posts/2019-02/1550130391_yumor-boks.png', 'title': '\xd0\xae\xd0\xbc\xd0\xbe\xd1\x80 \xd0\x91\xd0\xbe\xd0\xba\xd1\x81'},
+{'url': 'http://domatv.net/206-jumor-boks.html', 'img': 'http://domatv.net/uploads/posts/2019-02/1550130391_yumor-boks.png', 'title': '\xd1\x8e\xd0\xbc\xd0\xbe\xd1\x80 \xd0\xb1\xd0\xbe\xd0\xba\xd1\x81'},
 {'url': 'http://domatv.net/74-ju-tv.html', 'img': 'http://domatv.net/uploads/posts/2018-12/1543639914_yu_tv.png', 'title': '\xd1\x8e \xd1\x82\xd0\xb2'},
 {'url': 'http://domatv.net/199-shokirujuschee-hd.html', 'img': 'http://domatv.net/uploads/posts/2019-02/1550061609_shokirujuschee_hd.png', 'title': '\xd0\xa8\xd0\xbe\xd0\xba\xd0\xb8\xd1\x80\xd1\x83\xd1\x8e\xd1\x89\xd0\xb5\xd0\xb5 HD'},
 {'url': 'http://domatv.net/92-shanson-tv.html', 'img': 'http://domatv.net/uploads/posts/2018-11/1543233670_shansontv.png', 'title': '\xd0\xa8\xd0\xb0\xd0\xbd\xd1\x81\xd0\xbe\xd0\xbd \xd0\xa2\xd0\x92'},
@@ -162,4 +162,4 @@
 {'url': 'http://domatv.net/230-22.html', 'img': 'http://domatv.net/uploads/posts/2019-05/1558121354_2_2.png', 'title': '2+2'},
 {'url': 'http://domatv.net/140-1hd.html', 'img': 'http://domatv.net/uploads/posts/2019-01/1547300343_1hd.png', 'title': '1HD'},
 ]
-udata=1579678336.48
+udata=1587712526.28
