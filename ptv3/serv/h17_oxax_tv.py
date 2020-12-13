@@ -34,7 +34,7 @@ def mfind(t,s,e):
 	r2=r[:r.find(e)]
 	return r2
 
-def decoder(h):
+def decoder_old(h):
 	import base64#'//REREREREln', 
 	L = ['#2', '//RERERERE', '//RERERER', '//VFRUVFRUE', '//VFRUVFRU', '//NTU1U1NT', '//UlJSUlJS', '//RlZGVkZW']
 	h = h.replace('//NTU1//', '//')
@@ -59,7 +59,14 @@ def decoder(h):
 	return r
 
 
-def get_stream(url):
+def decoder(h):
+		import base64
+		while len(h) != 144:
+			for i in ['#2', '//RERERERE', '//VFRUVFRU', '//NTU1U1NT', '//UlJSUlJS', '//RlZGVkZW']:
+				h = h.replace(i, '')
+		return base64.b64decode(h)
+
+def get_stream_old(url):
 		try:
 			http=getURL(url[8:])
 			ss='$.get("pley",{kes:\''
@@ -76,16 +83,20 @@ def get_stream(url):
 		except:
 			return ''
 
+def get_stream(url):
+			http=getURL(url[8:])
+			ss='$.get("pley",{kes:\''
+			es='\'},function(data){$('
+			pl=httpSiteUrl+'/pley?kes='+mfind(http,ss,es)
+			http2=getURL(pl)
+			tmp=mfind(http2,'file:"','"')
+			st=decoder(tmp)
+			return st
 
 class PZL:
-	def __init__(self):
-		pass
-
 	def Streams(self, url):
-			for i in range(3):
-				st=get_stream(url)
-				if st!='': return [st,]
-			return []
+			st=get_stream(url)
+			return [st,]
 
 	def Canals(self):
 		LL=[]

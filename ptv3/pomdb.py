@@ -86,7 +86,7 @@ def add(id, info):
 	ftp.quit()
 
 def get_info(id):
-	if id == 'HOST': HOST = 'segaroms.my1.ru'
+	if id == 'HOST': HOST = 'roms.my1.ru'
 	else:            HOST=get_host()['HOST']
 	url='http://'+HOST+'/pom/'+id+'.info'
 	info=eval(getURL(url))

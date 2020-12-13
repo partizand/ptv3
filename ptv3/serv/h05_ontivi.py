@@ -10,9 +10,9 @@ httpSiteUrl = 'http://' + siteUrl
 
 def GET(url, Referer = httpSiteUrl):
 	req = urllib2.Request(url)
-	req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0')
-	req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8')
-	req.add_header('Accept-Language', 'ru-RU,ru;q=0.8,en-US;q=0.5,en;q=0.3')
+	req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.183 Safari/537.36 OPR/72.0.3815.320')
+	req.add_header('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9')
+	req.add_header('Accept-Language', 'ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7')
 	req.add_header('Referer', Referer)
 	response = urllib2.urlopen(req)
 	link=response.read()
@@ -34,7 +34,7 @@ def mfind(t,s,e):
 	r2=r[:r.find(e)]
 	return r2
 
-def decoder(h):
+def decoder_old(h):
 	import base64#'//REREREREln', 
 	L = ['#2', '//RERERERE', '//RERERER', '//VFRUVFRUE', '//VFRUVFRU', '//NTU1U1NT', '//UlJSUlJS', '//RlZGVkZW']
 	h = h.replace('//NTU1//', '//')
@@ -58,36 +58,54 @@ def decoder(h):
 	r = base64.b64decode(h)
 	return r
 
+def decoder(h):
+		import base64
+		while len(h) != 144:
+			for i in ['#2', '//RERERERE', '//VFRUVFRU', '//NTU1U1NT', '//UlJSUlJS', '//RlZGVkZW']:
+				h = h.replace(i, '')
+		return base64.b64decode(h)
 
-def get_stream(url):
+
+def get_stream_old(url):
 		try:
 			http=GET(url)#[7:]
 			if "silka:" in http: return mfind(http, "{silka:'", "'")
 			pl=httpSiteUrl+'/open?kes='+mfind(http,"{kes:'","'")
-			print pl
-			http2=GET(pl)
-			tmp=mfind(http2,'file : "','"')
-			print tmp
+			#print pl
+			http2=GET(pl).replace("'",'"').replace(' ','')
+			#print http2
+			tmp=mfind(http2,'file:"','"')
+			#print tmp
 			st=decoder(tmp)
-			print st
-			print st.rfind('=')
+			#print st
+			#print st.rfind('=')
 			if st.rfind('=')==51 or st.rfind('=')==50: return st
 			else: return ''
 		except:
 			return ''
 
+def get_stream(url):
+			#print 'get_stream'
+			http=GET(url)
+			#print '1'
+			if "silka:" in http: return mfind(http, "{silka:'", "'")
+			#print '2'
+			pl=httpSiteUrl+'/open?kes='+mfind(http,"{kes:'","'")
+			#print 'pl'
+			http2=GET(pl).replace("'",'"').replace(' ','')
+			tmp=mfind(http2,'file:"','"')
+			#print tmp
+			if '#2' in tmp or '//R' in tmp or '//V' in tmp: st=decoder(tmp)
+			else: st=tmp
+			return st
+
 
 class PZL:
-	def __init__(self):
-		pass
-
 	def Streams(self, url):
-			for i in range(3):
 				st=get_stream(url)
-				if st!='': 
-					print GET(st)
-					return [st,]
-			return []
+				print st
+				print GET(st)
+				return [st,]
 
 	def Canals(self):
 		http=GET(httpSiteUrl+'/chanel?catidd=0')
@@ -114,5 +132,5 @@ class PZL:
 
 #p=PZL()
 #p.Canals()
-#print p.Streams('00000000http://oxax.tv/fap-tv-2.html')
+#print p.Streams('http://ontivi.net/ictvtv.html')
 #time.sleep(30)

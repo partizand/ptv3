@@ -1,7 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-import os, cookielib, urllib, urllib2, time
+import os, cookielib, urllib, urllib2, time, ssl
+context = ssl.SSLContext(ssl.PROTOCOL_TLSv1)
 
 serv_id = '3'
 siteUrl = 'limehd.tv'
@@ -12,13 +13,14 @@ def xt(x):return xbmc.translatePath(x)
 
 
 def getURL(url, Referer = httpSiteUrl):
-	urllib2.install_opener(urllib2.build_opener()) 
-	req = urllib2.Request(url)
-	req.add_header('User-Agent', 'Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60')
-	req.add_header('Accept', 'text/html, application/xml, application/xhtml+xml, */*')
-	req.add_header('Accept-Language', 'ru,en;q=0.9')
-	req.add_header('Referer', Referer)
-	response = urllib2.urlopen(req)
+	response=urllib.urlopen("http://limehd.tv/ajax/get-channels-menu", context=context)
+	#urllib2.install_opener(urllib2.build_opener()) 
+	#req = urllib2.Request(url)
+	#req.add_header('User-Agent', 'Opera/10.60 (X11; openSUSE 11.3/Linux i686; U; ru) Presto/2.6.30 Version/10.60')
+	#req.add_header('Accept', 'text/html, application/xml, application/xhtml+xml, */*')
+	#req.add_header('Accept-Language', 'ru,en;q=0.9')
+	#req.add_header('Referer', Referer)
+	#response = urllib2.urlopen(req)
 	link=response.read()
 	response.close()
 	return link
@@ -43,12 +45,17 @@ class PZL:
 	def Streams(self, url):
 		print url
 		id=url[7:]
-		try:
+		#try:
+		if True:
 			hp=getURL(httpSiteUrl+'/ajax/get-channels-menu')
 			link = mfind(hp, "("+id+", '", "'")
+			print link
+			return [link]
+		'''
 			try:
 				pref=link[:link.rfind('/')+1]
 				pl=getURL(link)
+				print pl
 				L=pl.splitlines()
 				LL=[]
 				for i in L:
@@ -61,6 +68,7 @@ class PZL:
 				return [link]
 		except:
 			return []
+		'''
 	
 	def Canals(self):
 		hp=getURL(httpSiteUrl+'/ajax/get-channels-menu')

@@ -6,7 +6,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
 import threading, SocketServer, BaseHTTPServer
 quit_event = threading.Event()
 
-print('----- Starting PTV3 0.14.7 -----')
+print('----- Starting PTV3 0.15.8 -----')
 
 import sys, os, json
 import time
@@ -169,6 +169,7 @@ tr_list=[
 	'tr_epg_on',
 	'tr_epg_low',
 	'tr_autoshift',
+	'tr_restreamer',
 	'tr_upd14',
 	'tr_upd15',
 	'tr_upd16',
@@ -279,6 +280,7 @@ ib_list=[
 	'ib_mym3u3',
 	'ib_mym3u4',
 	'ib_myudp',
+	'ib_restream_list',
 	]
 
 for pid in range(99):
@@ -337,6 +339,7 @@ def WebUI():
 			id = i[3:]
 			val = str(settings.get(id))
 			if 'mym3u' in i or 'myudp' in i : w = 200
+			elif 'restream_list' in i:        w = 400
 			else:                             w = 110
 			s = controls.input('/settings/set/'+id+'/val/', val, w)
 			ui=ui.replace(i, s)

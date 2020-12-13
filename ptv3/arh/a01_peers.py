@@ -85,9 +85,12 @@ class ARH:
 		pass
 
 	def Streams(self, url):
+		print url
+		return ['HLS:'+url]
+		'''
 		if 'peers.tv' in url:
 			hp=getURL(url)
-			#print hp
+			print hp
 			L=hp.splitlines()
 			link=''
 			LL=[]
@@ -98,11 +101,7 @@ class ARH:
 					#print link
 					LL.append(link)
 			return LL
-			#try:
-			#	curl = 'HLS:'+url#+'|User-Agent=Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:35.0) Gecko/20100101 Firefox/35.0'
-			#	return [curl, ]
-			#except:
-			#	return []
+		'''
 
 	def Archive(self, id, t):
 		dt=time.strftime('%Y-%m-%d',t)
@@ -125,7 +124,7 @@ class ARH:
 				tm=i["time"][11:16]
 				files=i["files"]
 				uri=files[0]['movie']
-				#print uri
+				print uri
 				s_time  = time.mktime(time.strptime(i["time"][:16], '%m/%d/%Y %H:%M'))
 				LL.append({'url':uri, 'title':title+" "+subtitle, 'time':tm, 's_time':s_time})
 			except:

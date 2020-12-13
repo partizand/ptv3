@@ -106,6 +106,8 @@ class PZL:
 		LL=[]
 		for i in L:
 			try:
+				try: ott=i['ottParams']['monetizationModel']
+				except: ott = ''
 				title = i["title"]
 				url=i["content_url"]
 				try:img='http:'+i["logo"]
@@ -114,7 +116,7 @@ class PZL:
 					try:    img='http:'+i["thumbnail"]
 					except: img='null'
 				if 'null' in img: img=''
-				if '1tv' not in url and '/kal/' in url: LL.append({'url':url, 'img':img, 'title':title, 'group':""})
+				if '1tv' not in url and '/kal/' in url and ott=='': LL.append({'url':url, 'img':img, 'title':title, 'group':""})
 			except:
 				print i
 
